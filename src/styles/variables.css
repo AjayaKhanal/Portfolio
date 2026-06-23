@@ -1,0 +1,104 @@
+:root {
+    --primary-color: #0a56d1;;
+    --secondary-color: #ffffff;
+    --primary-hover-color: #021c46;
+    --bg-color: #F5F5F5;/*#f9fafb;*/
+    --text-color: #111827;
+    --muted-text-color: #6b7280;
+    --foreground: #1f1f1f;
+    --primary-bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    --font-family: 'Segoe UI', sans-serif;
+    --bg-secondary: #111;
+
+    --foreground: #1f1f1f;
+    --background: #ffffff;
+    --muted: #f4f4f5;
+    --accent: #e4e4e7;
+    --secondary: #e2e8f0;
+    --primary: #3b82f6;
+    --ring-border: #d4d4d8;
+    --card-surface: #ffffff;
+    --text-foreground: #111111;
+    --text-muted-foreground: #6b7280;
+
+    --nav-bg: #E0E0E0;/*#ffffff;*/
+    --logo-border: 2px solid #3b82f6 /*#000*/;
+    --logo-text: #3b82f6; /* #000;*/
+    --nav-text-color: #4b5563;
+    --link-color: #1f2937;
+    --link-hover-color: #2563eb;
+
+    --container-width: 1200px;
+    --section-padding: 60px;
+    --gap: 20px;
+    --border-radius: 8px;
+
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 6px 20px rgba(0, 0, 0, 0.1);
+
+    --shadow-md-nav: 4px 4px 12px rgba(0, 0, 0, 0.05);
+    --shadow-lg-nav: 0 0 20px rgba(0, 0, 0, 0.1); /*6px*/
+
+    --transition-speed: 0.3s ease-in-out;
+
+    --line-height-base: 1.6;
+    --heading-font-size: 2rem;
+    --subheading-font-size: 1.5rem;
+    --paragraph-font-size: 1.1rem;
+    --small-text: 0.9rem;
+    --content-max-width: 800px;
+  }
+  
+  :root.dark{
+    /* --primary-color: #3b82f6;
+    --secondary-color: #1f2937; */
+    --primary-color: #0a56d1;
+    --secondary-color: #ffffff;
+    --primary-hover-color: #0642a3;
+    --bg-color: #111827;
+    --text-color: #f9fafb;
+    --muted-text-color: #9ca3af;
+    --foreground: #f5f5f5;
+    --primary-bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    --font-family: 'Segoe UI', sans-serif;
+    --bg-secondary: #fff;
+
+    --foreground: #f5f5f5;
+    --background: #09090b;
+    --muted: #27272a;
+    --accent: #3f3f46;
+    --secondary: #1e293b;
+    --primary: #60a5fa;
+    --ring-border: #3f3f46;
+    --card-surface: #1b2536;
+    --text-foreground: #ffffff;
+    --text-muted-foreground: #9ca3af;
+      
+    --nav-bg: #1e293b;
+    --nav-text-color: #cbd5e1;
+     /* #99a1af; */
+    --logo-border: 2px solid #3b82f6;
+    /* #fff; */
+    --logo-text: #3b82f6;
+    --link-color: #e5e7eb;
+    --link-hover-color: #60a5fa;
+
+    /* --shadow-md: 0 4px 12px rgba(255, 255, 255, 0.05);
+    --shadow-lg: 0 6px 20px rgba(255, 255, 255, 0.1); */
+    
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 6px 20px rgba(0, 0, 0, 0.4);
+
+  --line-height-base: 1.6;
+    --heading-font-size: 2rem;
+    --subheading-font-size: 1.5rem;
+    --paragraph-font-size: 1.1rem;
+    --small-text: 0.9rem;
+    --content-max-width: 800px;
+  }
+
+  * {
+    transition: background-color var(--transition-speed),
+                color var(--transition-speed),
+                border-color var(--transition-speed);
+  }

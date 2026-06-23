@@ -1,0 +1,33 @@
+.main, .section {
+    max-width: var(--container-width);
+    padding: var(--section-padding) var(--gap);
+    margin: auto;
+    min-height: calc(100vh - 120px);
+  }
+
+.main{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Prevent any stray element (e.g. entrance transforms) from forcing a
+   horizontal scrollbar. Applied to the root only — setting overflow-x on
+   BOTH html and body spawns a phantom second scrollbar on tall pages. */
+html {
+  overflow-x: hidden;
+}
+
+/* Tablet: trim the outer section padding so it doesn't stack with each
+   page's own padding and starve content of width. */
+@media (max-width: 768px) {
+  .main, .section {
+    padding: 48px 16px;
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+  .main, .section {
+    padding: 40px 12px;
+  }
+}

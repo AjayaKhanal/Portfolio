@@ -1,0 +1,20 @@
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+
+}
+h1, h2, h3 {
+  color: var(--text-color);
+}
+p {
+  color: var(--muted-text-color);
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+.main-content {
+  padding: 20px;
+}

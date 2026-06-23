@@ -1,0 +1,319 @@
+.about-page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: var(--section-padding) 24px;
+  font-family: var(--font-family);
+  line-height: var(--line-height-base);
+  color: var(--text-color);
+}
+
+/* ---------- Intro / hero ---------- */
+.about-hero {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.about-eyebrow {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 0.85rem;
+}
+
+.about-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text-foreground);
+  margin: 0 0 0.4rem;
+}
+
+.about-role {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--text-muted-foreground);
+  margin: 0 0 1.4rem;
+}
+
+.about-lead {
+  color: var(--text-muted-foreground);
+  font-size: 1.08rem;
+  line-height: 1.85;
+  max-width: 60ch;
+  margin: 0 auto 2rem;
+}
+
+.about-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.about-btn {
+  padding: 0.7rem 1.6rem;
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform var(--transition-speed), background-color var(--transition-speed),
+    border-color var(--transition-speed), color var(--transition-speed);
+}
+
+.about-btn--primary {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.about-btn--primary:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-2px);
+}
+
+.about-btn--ghost {
+  border: 1px solid var(--ring-border);
+  color: var(--text-foreground);
+}
+
+.about-btn--ghost:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.about-idcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.8rem;
+  margin: 0 auto 4.5rem;
+}
+
+/* ---------- Sections ---------- */
+.about-section {
+  margin-bottom: 4.5rem;
+}
+
+.about-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: var(--subheading-font-size);
+  font-weight: 600;
+  color: var(--text-foreground);
+  margin: 0 0 1.5rem;
+}
+
+.section-heading::before {
+  content: '';
+  width: 4px;
+  height: 1.35rem;
+  border-radius: 2px;
+  background-color: var(--primary);
+}
+
+/* ---------- Skills ---------- */
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-item {
+  background-color: var(--muted);
+  color: var(--text-foreground);
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid var(--ring-border);
+  cursor: default;
+  transition: transform var(--transition-speed), border-color var(--transition-speed),
+    color var(--transition-speed);
+}
+
+.skill-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ---------- Experience timeline ---------- */
+.timeline {
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background-color: var(--ring-border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 2.4rem;
+  padding-bottom: 2.25rem;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--bg-color);
+  border: 3px solid var(--ring-border);
+  box-shadow: 0 0 0 4px var(--bg-color);
+}
+
+.timeline-item--current::before {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.timeline-content {
+  border: 1px solid var(--ring-border);
+  border-radius: var(--border-radius);
+  padding: 1.2rem 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-speed), transform var(--transition-speed);
+}
+
+.timeline-content:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.timeline-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.timeline-role {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-foreground);
+  margin: 0;
+}
+
+.badge-current {
+  background-color: var(--primary);
+  color: #ffffff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+}
+
+.timeline-company {
+  color: var(--primary);
+  font-weight: 500;
+  margin: 0.3rem 0 0;
+}
+
+.timeline-duration {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--text-muted-foreground);
+  margin: 0.35rem 0 0.85rem;
+}
+
+.timeline-desc {
+  color: var(--text-muted-foreground);
+  font-size: var(--paragraph-font-size);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 40px 16px;
+  }
+
+  .about-hero {
+    margin-bottom: 3rem;
+  }
+
+  .about-section {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page {
+    padding: 32px 14px;
+  }
+
+  .about-role {
+    font-size: 1.05rem;
+  }
+
+  .about-lead {
+    font-size: 1rem;
+  }
+
+  /* Tighten the timeline so cards keep usable width on small phones */
+  .timeline-item {
+    padding-left: 1.9rem;
+    padding-bottom: 1.9rem;
+  }
+
+  .timeline-content {
+    padding: 1rem 1.1rem;
+  }
+
+  .about-btn {
+    flex: 1 1 140px;
+    text-align: center;
+  }
+}
+
+/* ---------- Animation ---------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fadeInUp 0.6s ease-in-out both;
+}
+
+.about-section.fade-up:nth-of-type(2) {
+  animation-delay: 0.1s;
+}
+.about-section.fade-up:last-of-type {
+  animation-delay: 0.2s;
+}

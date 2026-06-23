@@ -1,0 +1,110 @@
+.github-activity {
+  margin-bottom: 4.5rem;
+}
+
+.gh-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.gh-head .section-heading {
+  margin: 0;
+}
+
+.gh-profile-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--text-foreground);
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  transition: border-color var(--transition-speed), color var(--transition-speed),
+    transform var(--transition-speed);
+}
+
+.gh-profile-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.gh-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  box-shadow: var(--shadow-md);
+}
+
+.gh-years {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.gh-year {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text-muted-foreground);
+  background: transparent;
+  border: 1px solid var(--ring-border);
+  transition: color var(--transition-speed), border-color var(--transition-speed),
+    background-color var(--transition-speed);
+}
+
+.gh-year:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.gh-year.is-active {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.gh-heatmap {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 0.25rem;
+}
+
+.gh-cards {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.gh-card {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 640px) {
+  .gh-panel {
+    padding: 1rem;
+  }
+
+  .gh-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

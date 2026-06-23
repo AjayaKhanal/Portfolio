@@ -1,0 +1,216 @@
+.tech-orbit-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  padding: clamp(3rem, 8vw, 6rem) 1rem;
+}
+
+.tech-orbit-head {
+  text-align: center;
+}
+
+.tech-orbit-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 0.6rem;
+}
+
+.tech-orbit-title {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-foreground);
+}
+
+.tech-orbit {
+  position: relative;
+  width: min(440px, 86vw);
+  aspect-ratio: 1 / 1;
+  container-type: size;
+  --r-inner: 26cqmin;
+  --r-outer: 44cqmin;
+}
+
+.orbit-track {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px dashed var(--ring-border);
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}
+
+.orbit-track--inner {
+  width: calc(var(--r-inner) * 2);
+  height: calc(var(--r-inner) * 2);
+}
+
+.orbit-track--outer {
+  width: calc(var(--r-outer) * 2);
+  height: calc(var(--r-outer) * 2);
+}
+
+.orbit-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 78px;
+  height: 78px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    color-mix(in srgb, var(--primary) 32%, var(--card-surface)),
+    var(--card-surface));
+  border: 1px solid color-mix(in srgb, var(--primary) 45%, var(--ring-border));
+  box-shadow: 0 0 0 8px color-mix(in srgb, var(--primary) 8%, transparent),
+    var(--shadow-lg);
+  z-index: 2;
+}
+
+.orbit-core-glyph {
+  font-family: 'Fira Code', ui-monospace, monospace;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+.orbit-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.orbit-ring--inner {
+  animation: orbit-spin 26s linear infinite;
+}
+
+.orbit-ring--outer {
+  animation: orbit-spin-rev 40s linear infinite;
+}
+
+.orbit-node {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: rotate(var(--angle)) translateX(var(--node-r));
+}
+
+.orbit-ring--inner .orbit-node {
+  --node-r: var(--r-inner);
+}
+
+.orbit-ring--outer .orbit-node {
+  --node-r: var(--r-outer);
+}
+
+.orbit-node-spin--inner {
+  animation: orbit-spin-rev 26s linear infinite;
+}
+
+.orbit-node-spin--outer {
+  animation: orbit-spin 40s linear infinite;
+}
+
+.orbit-node-upright {
+  transform: rotate(calc(-1 * var(--angle)));
+}
+
+.orbit-chip {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-speed), border-color var(--transition-speed),
+    box-shadow var(--transition-speed);
+}
+
+.orbit-chip:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+  border-color: var(--chip-color);
+  box-shadow: 0 0 22px -4px var(--chip-color), var(--shadow-lg);
+  z-index: 5;
+}
+
+.orbit-icon {
+  font-size: 1.25rem;
+  color: var(--chip-color);
+  flex-shrink: 0;
+}
+
+.orbit-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-foreground);
+}
+
+.tech-orbit:hover .orbit-ring,
+.tech-orbit:hover .orbit-node-spin--inner,
+.tech-orbit:hover .orbit-node-spin--outer {
+  animation-play-state: paused;
+}
+
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbit-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .tech-orbit {
+    --r-inner: 28cqmin;
+    --r-outer: 46cqmin;
+  }
+
+  .orbit-label {
+    display: none;
+  }
+
+  .orbit-chip {
+    padding: 0.55rem;
+  }
+
+  .orbit-icon {
+    font-size: 1.35rem;
+  }
+
+  .orbit-core {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring--inner,
+  .orbit-ring--outer,
+  .orbit-node-spin--inner,
+  .orbit-node-spin--outer {
+    animation: none;
+  }
+}

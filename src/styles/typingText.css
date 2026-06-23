@@ -1,0 +1,36 @@
+.typing-text {
+    font-size: 1rem;
+    white-space: pre-wrap;
+    line-height: 1.5;
+    position: relative;
+  }
+
+  /* Full text, invisible — reserves the final height to prevent layout shift. */
+  .typing-ghost {
+    visibility: hidden;
+  }
+
+  /* Animated text overlaid on the ghost; same width so wrapping matches. */
+  .typing-visible {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: currentColor;
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.8s steps(2, start) infinite;
+  }
+  
+  @keyframes blink {
+    to {
+      visibility: hidden;
+    }
+  }
+  

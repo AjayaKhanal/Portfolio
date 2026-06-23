@@ -1,0 +1,270 @@
+.project-detail-container {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+  animation: fadeIn 0.25s ease;
+}
+
+/* ---------- Back link ---------- */
+.project-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1.1rem 0.5rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-foreground);
+  text-decoration: none;
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  border-radius: 999px;
+  box-shadow: var(--shadow-md);
+  transition: color var(--transition-speed), border-color var(--transition-speed),
+    box-shadow var(--transition-speed), transform var(--transition-speed),
+    background-color var(--transition-speed);
+}
+
+.project-back-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.project-back-arrow {
+  display: inline-flex;
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: transform var(--transition-speed);
+}
+
+.project-back-link:hover .project-back-arrow {
+  transform: translateX(-4px);
+}
+
+/* ---------- Card ---------- */
+.project-detail-content {
+  background: var(--card-surface);
+  padding: 2rem;
+  border: 1px solid var(--ring-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  line-height: 1.75;
+  color: var(--text-foreground);
+}
+
+/* ---------- Hero image ---------- */
+.project-detail-image {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin: 0 0 1.5rem;
+  box-shadow: var(--shadow-md);
+  animation: scaleIn 0.5s ease both;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.project-detail-image:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- No-image fallback ---------- */
+.project-detail-noimage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  height: 220px;
+  margin: 0 0 1.5rem;
+  border: 1px dashed var(--ring-border);
+  border-radius: var(--border-radius);
+  background: var(--muted);
+  color: var(--text-muted-foreground);
+  animation: scaleIn 0.5s ease both;
+}
+
+.project-detail-noimage span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Header (meta) ---------- */
+.project-detail-header {
+  border-bottom: 1px solid var(--ring-border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-detail-title {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text-foreground);
+  margin: 0 0 0.5rem;
+}
+
+.project-detail-tagline {
+  color: var(--text-muted-foreground);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 0 1.1rem;
+}
+
+.project-detail-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.4rem;
+}
+
+.project-detail-tech .tech-badge {
+  padding: 0.32rem 0.7rem;
+  background: var(--muted);
+  border: 1px solid var(--ring-border);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-foreground);
+}
+
+/* ---------- Action buttons ---------- */
+.project-detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.project-detail-btn {
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--border-radius);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: transform var(--transition-speed), background-color var(--transition-speed),
+    border-color var(--transition-speed), color var(--transition-speed);
+}
+
+.project-detail-btn--primary {
+  background-color: var(--primary);
+  color: #ffffff;
+}
+
+.project-detail-btn--primary:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-2px);
+}
+
+.project-detail-btn--ghost {
+  border-color: var(--ring-border);
+  color: var(--text-foreground);
+}
+
+.project-detail-btn--ghost:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* ---------- MDX body ---------- */
+/* The first H1 in the MDX body repeats the title we already render above */
+.project-detail-body h1:first-child {
+  display: none;
+}
+
+.project-detail-body h1,
+.project-detail-body h2,
+.project-detail-body h3 {
+  margin-top: 1.6rem;
+  color: var(--text-foreground);
+  font-weight: 600;
+}
+
+.project-detail-body p {
+  margin-top: 1rem;
+  font-size: 1.08rem;
+  color: var(--text-muted-foreground);
+}
+
+.project-detail-body img {
+  width: 100%;
+  border-radius: 8px;
+  margin: 1.2rem 0;
+  box-shadow: var(--shadow-md);
+}
+
+.project-detail-body ul {
+  padding-left: 1.4rem;
+  margin-top: 1rem;
+}
+
+.project-detail-body li {
+  margin-bottom: 0.6rem;
+}
+
+.project-detail-body a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.project-detail-body a:hover {
+  color: var(--primary-hover-color);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .project-detail-container {
+    padding: 2rem 1rem;
+  }
+
+  .project-detail-content {
+    padding: 1.5rem;
+  }
+
+  .project-detail-image {
+    max-height: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-detail-container {
+    padding: 1.5rem 0.75rem;
+  }
+
+  .project-detail-content {
+    padding: 1.1rem;
+  }
+
+  .project-detail-tagline {
+    font-size: 1rem;
+  }
+
+  .project-detail-body p {
+    font-size: 1rem;
+  }
+
+  /* Stack the action buttons full-width so they're easy to tap */
+  .project-detail-links {
+    flex-direction: column;
+  }
+
+  .project-detail-btn {
+    text-align: center;
+  }
+}

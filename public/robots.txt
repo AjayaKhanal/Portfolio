@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Update to your real deployed URL
+Sitemap: https://your-domain.com/sitemap.xml

@@ -1,0 +1,68 @@
+.theme-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--muted);
+  border: 1px solid var(--ring-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Sliding highlight that tracks the active option */
+.theme-switch-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--background);
+  border: 1px solid var(--ring-border);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.theme-switch-btn {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--text-muted-foreground);
+  transition: color var(--transition-speed), transform var(--transition-speed);
+}
+
+.theme-switch-btn:hover {
+  color: var(--text-foreground);
+}
+
+.theme-switch-btn:active {
+  transform: scale(0.88);
+}
+
+.theme-switch-btn.is-active {
+  color: var(--primary);
+}
+
+.theme-switch-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.theme-switch-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform var(--transition-speed);
+}
+
+.theme-switch-btn.is-active .theme-switch-icon {
+  transform: scale(1.1);
+}
