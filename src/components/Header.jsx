@@ -55,21 +55,17 @@ const Header=()=>{
                     <Link to="/projects" className="link">Projects</Link>
                     <Link to="/contact" className="link">Contact</Link>
                     </nav>
-
-                    <div className="theme-switcher-mobile">
-                        <ThemeSwitcher />
-                    </div>
                 </div>
 
                 <div className="header-right">
+                    <div className="theme-switcher">
+                        <ThemeSwitcher />
+                    </div>
+
                     <button className="bars" id="bars" onClick={barToggle}
                     aria-label="Toogle navigation-menu">
                         <span className={`bar ${menuOpen ? "open" : ""}`}></span>
                     </button>
-
-                    <div className="theme-switcher">
-                        <ThemeSwitcher />
-                    </div>
                 </div>
             </div>
         </header>

@@ -1,0 +1,26 @@
+/* =====================================================================
+   Global box-grid backdrop
+   ---------------------------------------------------------------------
+   The same graph-paper pattern that used to live only in the home hero,
+   now applied behind EVERY page. It's a fixed, full-viewport layer that
+   sits above the page background colour but behind all content, so the
+   grid shows through page gutters and transparent areas on every route.
+   ===================================================================== */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* behind content, above the body background colour */
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(to right, var(--ring-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--ring-border) 1px, transparent 1px);
+  background-size: 46px 46px;
+  opacity: 0.4;
+
+  /* Soft vignette so the lines fade gently toward the very edges. */
+  -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 35%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 95% 90% at 50% 35%, #000 60%, transparent 100%);
+}

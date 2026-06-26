@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 import { Github, ArrowUpRight } from 'lucide-react'
 import '../styles/github-activity.css'
 
-const YEARS = ['last', 2026, 2025, 2024, 2023]
+const YEARS = [2026, 2025, 2024, 2023]
 
 const calendarTheme = {
   light: ['#ebedf0', '#bcd9ff', '#7cb4ff', '#3f8bff', '#1f6feb'],
@@ -13,14 +13,14 @@ const calendarTheme = {
 
 const GitHubActivity = ({ username = 'ajayakhanal' }) => {
   const { resolvedTheme } = useTheme()
-  const [year, setYear] = useState('last')
+  const [year, setYear] = useState(YEARS[0])
 
   const profileUrl = `https://github.com/${username}`
   const stats = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=true&bg_color=00000000&title_color=2f81f7&icon_color=2f81f7&text_color=8b949e&hide=issues`
   const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&hide_border=true&bg_color=00000000&title_color=2f81f7&text_color=8b949e`
 
   return (
-    <section className="github-activity fade-up" aria-label="GitHub activity">
+    <section className="github-activity" data-reveal="up" aria-label="GitHub activity">
       <div className="gh-head">
         <h2 className="section-heading">GitHub Activity</h2>
         <a className="gh-profile-link" href={profileUrl} target="_blank" rel="noopener noreferrer">
@@ -40,7 +40,7 @@ const GitHubActivity = ({ username = 'ajayakhanal' }) => {
               onClick={() => setYear(y)}
               aria-pressed={year === y}
             >
-              {y === 'last' ? 'Last year' : y}
+              {y}
             </button>
           ))}
         </div>

@@ -1,4 +1,8 @@
 .projects-page {
+    /* width:100% so it fills .main (a flex column). Without it, the
+       `margin: 0 auto` cancels flex stretch and the page shrink-wraps,
+       collapsing the projects grid to a single column. */
+    width: 100%;
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
@@ -104,10 +108,66 @@
     100% { background-position: 0 0; }
   }
   
+  /* ---------- View toolbar (grid / list toggle) ---------- */
+  .projects-viewbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .projects-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted-foreground);
+  }
+
+  .view-toggle {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background: var(--card-surface);
+    border: 1px solid var(--ring-border);
+    border-radius: 10px;
+  }
+
+  .view-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 32px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-muted-foreground);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .view-btn:hover {
+    color: var(--text-foreground);
+  }
+
+  .view-btn.is-active {
+    background: var(--primary);
+    color: #ffffff;
+  }
+
+  /* ---------- Grid / list layouts ---------- */
+  /* Grid: as many columns as fit the screen (min 260px each, never overflow). */
   .projects-grid {
     display: grid;
-    gap: 1.8rem;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.6rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    margin-bottom: 2.5rem;
+  }
+
+  /* List: always exactly one item per row. */
+  .projects-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
     margin-bottom: 2.5rem;
   }
   

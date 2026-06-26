@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import { LayoutGrid, List } from 'lucide-react'
 import {getAllProjects} from '../utils/mdxutils'
 import ProjectCard from '../components/ProjectCard'
 import SearchBar from '../components/SearchBar'
@@ -14,7 +15,13 @@ const Projects = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  // 'grid' (multiple per row) or 'list' (one per row); remembered between visits.
+  const [view, setView] = useState(() => localStorage.getItem('projectsView') || 'grid');
   const perPage=6;
+
+  useEffect(() => {
+    localStorage.setItem('projectsView', view);
+  }, [view]);
 
   useEffect(()=>{
     setIsLoading(true);
@@ -90,18 +97,52 @@ const Projects = () => {
 
       {!isLoading && !error && (
         <>
-        {/* `key` on the grid restarts the stagger whenever the page/filters change */}
-        <div className="projects-grid stagger" key={`${searchQuery}-${activeTag}-${currentPage}`}>
+        {paginated.length > 0 && (
+          <div className="projects-viewbar">
+            <span className="projects-count">
+              {filtered.length} project{filtered.length !== 1 ? 's' : ''}
+            </span>
+            <div className="view-toggle" role="group" aria-label="View mode">
+              <button
+                type="button"
+                className={`view-btn${view === 'grid' ? ' is-active' : ''}`}
+                onClick={() => setView('grid')}
+                aria-pressed={view === 'grid'}
+                aria-label="Grid view"
+                title="Grid view"
+              >
+                <LayoutGrid size={18} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className={`view-btn${view === 'list' ? ' is-active' : ''}`}
+                onClick={() => setView('list')}
+                aria-pressed={view === 'list'}
+                aria-label="List view"
+                title="List view"
+              >
+                <List size={18} aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* `key` re-triggers the reveal whenever the page/filters/view change */}
+        <div
+          className={view === 'list' ? 'projects-list' : 'projects-grid'}
+          data-reveal="up"
+          key={`${view}-${searchQuery}-${activeTag}-${currentPage}`}
+        >
         {paginated.length > 0 ? (
           paginated.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+            <ProjectCard key={project.slug} project={project} view={view} />
           ))
         ) : (
           <p className="no-results anim-fade">No results found.</p>
         )}
         </div>
 
-        <div className="anim-up">
+        <div data-reveal="up">
           <Pagination
             current={currentPage}
             total={Math.ceil(filtered.length / perPage)}

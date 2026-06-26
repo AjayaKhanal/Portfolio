@@ -1,123 +1,121 @@
-.header{
-    background-color: var(--nav-bg);
-    color: var(--nav-text-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center; /**/
-    padding: 0 20px;
-    box-shadow: var(--shadow-md);
-    height: 60px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    font-family: var(--font-family);
-    transition: box-shadow var(--transition-speed), background-color var(--transition-speed); /**/
+/* =====================================================================
+   Header / navbar
+   Desktop:  logo (left) · nav (center) · theme switcher (right)
+   Mobile:   logo (left) · hamburger (right) -> slide-down nav panel
+   ===================================================================== */
+.header {
+  background-color: var(--nav-bg);
+  color: var(--nav-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 20px;
+  box-shadow: var(--shadow-md);
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  font-family: var(--font-family);
+  transition: box-shadow var(--transition-speed), background-color var(--transition-speed);
 }
 
-.header-left{
-  flex:1;
+.header-left {
+  flex: 1;
   display: flex;
   align-items: center;
 }
 
-.header-main{
+.header-main {
   flex: 2;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  position: relative;
-  transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
-}
-
-.header-main.open {
-  transform: translateY(0);
+  justify-content: space-between;
 }
 
 .header-center {
   flex: 1;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .header-right {
-  flex: 1;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  gap: 12px;
 }
 
-.logo{
-    font-weight: 700;
-    /* font-weight: 600; */
-    font-size: 1.8rem;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    border: var(--logo-border);
-    color: var(--logo-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color var(--transition-speed), transform 0.3s ease;/**/
+/* ---------- Logo ---------- */
+.logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: var(--logo-border);
+  color: var(--logo-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform 0.3s ease;
 }
 
-.logo:hover {/**/
+.logo:hover {
   transform: scale(1.05);
   background-color: rgba(59, 130, 246, 0.1);
 }
 
-.nav{
-    display: flex;
-    gap: 24px;
-    /* transition: max-height 0.4s ease-in-out; */
+/* ---------- Nav links ---------- */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
 }
 
-.nav .link{
-    text-decoration: none;
-    list-style-type: none;
-    color: var(--link-color);
-    cursor: pointer;
-    position: relative;
-    padding: 6px 4px;
-    font-weight: 500;
-    font-size: 16px;
-    transition: color var(--transition-speed), transform 0.2s ease;
+.nav .link {
+  text-decoration: none;
+  color: var(--link-color);
+  cursor: pointer;
+  position: relative;
+  padding: 6px 4px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: color var(--transition-speed), transform 0.2s ease, background-color var(--transition-speed);
 }
 
-.nav .link::after{
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    height: 2px;
-    width: 0%;
-    background-color: var(--link-hover-color);
-    transition: width 0.3s ease-in-out;
+.nav .link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background-color: var(--link-hover-color);
+  transition: width 0.3s ease-in-out;
 }
 
-.nav .link:hover{
+.nav .link:hover {
   color: var(--link-hover-color);
   transform: translateY(-1px);
 }
 
-.nav .link:hover::after{
-    width: 100%;
+.nav .link:hover::after {
+  width: 100%;
 }
 
+/* ---------- Theme switcher ---------- */
 .theme-switcher {
   display: flex;
   align-items: center;
 }
 
-.theme-switcher-mobile{
-  display: none;
-}
-
+/* ---------- Hamburger button (hidden on desktop) ---------- */
 .bars {
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   width: 40px;
@@ -125,186 +123,128 @@
   background: none;
   border: none;
   cursor: pointer;
-  /* padding: 0; */
 }
 
 .bar {
-    width: 25px;
-    height: 2px;
-    background-color: var(--link-color);
-    position: relative;
-    display: block;
-    transition: all var(--transition-speed);
-  }
+  width: 25px;
+  height: 2px;
+  background-color: var(--link-color);
+  position: relative;
+  display: block;
+  transition: all var(--transition-speed);
+}
 
-  .bar::before,
-  .bar::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    width: 25px;
-    height: 2px;
-    background-color: var(--link-color);
-    transition: all var(--transition-speed);
-  }
-  
-  .bar::before {
-    top: -8px;
-  }
-  
+.bar::before,
 .bar::after {
-    top: 8px;
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 25px;
+  height: 2px;
+  background-color: var(--link-color);
+  transition: all var(--transition-speed);
+}
+
+.bar::before { top: -8px; }
+.bar::after { top: 8px; }
+
+.bar.open { background-color: transparent; }
+.bar.open::before { transform: rotate(45deg); top: 0; }
+.bar.open::after { transform: rotate(-45deg); top: 0; }
+
+/* =====================================================================
+   Mobile (<= 768px)
+   ===================================================================== */
+@media (max-width: 768px) {
+  .header-left,
+  .header-main {
+    flex: 0 0 auto;
   }
 
-  .bar.open {
-    background-color: transparent;
-  }
-  
-  .bar.open::before {
-    transform: rotate(45deg);
-    top: 0;
-  }
-  
-  .bar.open::after {
-    transform: rotate(-45deg);
-    top: 0;
+  .header-main {
+    /* Only the hamburger lives in the bar; the nav becomes a dropdown. */
+    justify-content: flex-end;
   }
 
-  /* .header-main {
-    transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
+  .bars {
+    display: flex;
   }
-  
-  .header-main.open {
-    transform: translateY(0);
-  } */
-  
-  @media (max-width: 768px) {
-    /* ,.header-right */
-    .header-left,
-    .header-center {
-      flex: unset;
-    }
 
-    .header-left{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  /* Keep the theme switcher inline in the bar, sitting just before the
+     hamburger (order set by the JSX). */
+  .header-right .theme-switcher {
+    display: flex;
+  }
 
-  .header-main{
-    position: relative;
-    /* flex-direction: column; */
-    /* transform: translateY(-30px); */
+  /* ---- Slide-down nav panel ---- */
+  .header-center {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
     width: 100%;
-    transition: max-height 0.4s ease, opacity 0.4s ease, transform 0.4s ease;
-    max-height: 0;
-  }
-
-  .header-main.open {
-    /* max-height: 500px; */
-    transform: translateY(0);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 12px;
     background-color: var(--nav-bg);
-    box-shadow: var(--shadow-md-nav);
-  }
+    border-radius: 0 0 18px 18px;
+    box-shadow: var(--shadow-lg-nav);
 
-  .header-center, .theme-switcher {
-    display: none;
+    /* Collapsed by default; animates open when .header-main gets .open */
+    max-height: 0;
     opacity: 0;
-    overflow: hidden;
     visibility: hidden;
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: max-height 0.35s ease, opacity 0.28s ease,
+      transform 0.3s ease, visibility 0.3s;
   }
 
-      .header-main.open .header-center{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-        padding: 20px 0;
-        background-color: var(--nav-bg);
-        /* Anchor to the viewport, directly under the 60px header bar, so the
-           dropdown position never depends on the collapsed parent's height. */
-        position: fixed;
-        top: 60px;
-        left: 0;
-        right: 0;
-        width: 100%;
-        opacity: 1;
-        visibility: visible;
-        border-radius: 0 0 18px 18px;
-        box-shadow: var(--shadow-lg-nav);
-      }
-
-      .header-main.open .theme-switcher-mobile {
-        display: flex;
-        justify-content: center;
-        padding: 10px 0;
-        width: 100%;
-      }
-
-      .header-main.open .nav {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        width: 100%;
-      }
-
-      .nav .link {
-        text-align: center;
-        font-size: 16px;
-      }
-
-      .header-right {
-        display: flex;
-        align-items: center;
-        /* justify-content: space-between; */
-        justify-content: flex-end;
-        width: 100%;
-      }
-
-      .header-right .theme-switcher {
-        display: none;
-      }
+  .header-main.open .header-center {
+    max-height: calc(100vh - 60px);
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    padding: 10px 12px 16px;
   }
 
-  @media (min-width: 769px) {
-
-    .header-main {
-      flex: 2;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-    }
-
-    .header-center {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-    }
-
-    .bars{
-      display: none;
-    }
-
-    .theme-switcher {
-      display: flex;
-    }
-
-    .nav{
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-end;
-    }
+  .nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    width: 100%;
   }
 
-  /* Small phones: tighten the bar and shrink the logo */
-  @media (max-width: 480px) {
-    .header {
-      padding: 0 14px;
-    }
-
-    .logo {
-      width: 42px;
-      height: 42px;
-      font-size: 1.5rem;
-    }
+  .nav .link {
+    text-align: center;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 1.05rem;
   }
+
+  /* Full-width rows: drop the underline, use a tap-friendly hover fill. */
+  .nav .link::after {
+    display: none;
+  }
+
+  .nav .link:hover {
+    transform: none;
+    color: var(--link-hover-color);
+    background-color: color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+}
+
+/* Small phones: tighten the bar and shrink the logo */
+@media (max-width: 480px) {
+  .header {
+    padding: 0 14px;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+    font-size: 1.5rem;
+  }
+}

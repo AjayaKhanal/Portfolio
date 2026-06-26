@@ -1,6 +1,7 @@
 import './App.css';
 import {BrowserRouter} from 'react-router-dom';
 import './styles/variables.css';
+import './styles/background.css';
 import './styles/layout.css';
 import './styles/animation.css';
 import Layout from './pages/Layout';

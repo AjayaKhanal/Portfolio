@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Toast from '../components/Toast'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/contact.css'
 
@@ -31,11 +32,20 @@ const socials = [
 
 const initialForm = { name: '', email: '', subject: '', message: '' };
 
+// Web3Forms delivers submissions straight to the email you registered the key
+// with — no backend needed. Get a free key at https://web3forms.com (enter your
+// Gmail, they email you the access key). Prefer the env var (.env file:
+// REACT_APP_WEB3FORMS_KEY=xxxx) so the key isn't hard-coded; the fallback below
+// is only a placeholder for local testing.
+const ACCESS_KEY =
+  process.env.REACT_APP_WEB3FORMS_KEY || 'REPLACE_WITH_YOUR_WEB3FORMS_ACCESS_KEY';
+
 const Contact = () => {
   usePageMeta('Contact', "Get in touch with Ajaya Khanal — let's work together on your next project.");
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
-  const [sent, setSent] = useState(false);
+  // status: { type: 'idle' | 'sending' | 'success' | 'error', message: string }
+  const [status, setStatus] = useState({ type: 'idle', message: '' });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,27 +65,67 @@ const Contact = () => {
     return next;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 1) Validate first — bail out with field-level errors if anything's off.
     const next = validate();
     if (Object.keys(next).length) {
       setErrors(next);
+      setStatus({ type: 'error', message: 'Please fix the highlighted fields and try again.' });
       return;
     }
 
-    const subject = form.subject.trim() || `New message from ${form.name}`;
-    const body = `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`;
-    window.location.href = `mailto:ajayakhanal@example.com?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    // Guard against a forgotten key so the user gets a clear message, not a silent fail.
+    if (!ACCESS_KEY || ACCESS_KEY.startsWith('REPLACE_WITH_')) {
+      setStatus({
+        type: 'error',
+        message: 'Email sending is not configured yet. Please try again later.',
+      });
+      return;
+    }
 
-    setSent(true);
-    setForm(initialForm);
+    // 2) Send straight to the inbox via Web3Forms — no mail client involved.
+    setStatus({ type: 'sending', message: 'Sending your message…' });
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          name: form.name,
+          email: form.email,
+          subject: form.subject.trim() || `New portfolio message from ${form.name}`,
+          message: form.message,
+          from_name: 'Portfolio Contact Form',
+        }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        setStatus({
+          type: 'success',
+          message: "Thanks for reaching out! Your message has been sent — I'll get back to you soon.",
+        });
+        setForm(initialForm);
+        setErrors({});
+      } else {
+        setStatus({
+          type: 'error',
+          message: data.message || "Sorry, your message couldn't be sent. Please try again in a moment.",
+        });
+      }
+    } catch (err) {
+      setStatus({
+        type: 'error',
+        message: 'Network error — please check your connection and try again.',
+      });
+    }
   };
 
   return (
     <div className='contact-page'>
-      <header className='contact-hero fade-up'>
+      <header className='contact-hero' data-reveal='up'>
         <span className='contact-eyebrow'>Get in Touch</span>
         <h1 className='contact-title'>Let's Work Together</h1>
         <p className='contact-lead'>
@@ -86,7 +136,7 @@ const Contact = () => {
       </header>
 
       <div className='contact-grid'>
-        <aside className='contact-info fade-up'>
+        <aside className='contact-info' data-reveal='left'>
           <h2 className='section-heading'>Contact Details</h2>
           <ul className='contact-info-list'>
             {contactDetails.map((item) => (
@@ -120,14 +170,9 @@ const Contact = () => {
           </div>
         </aside>
 
-        <section className='contact-form-wrap fade-up'>
+        <section className='contact-form-wrap' data-reveal='right'>
           <h2 className='section-heading'>Send a Message</h2>
 
-          {sent && (
-            <p className='contact-success' role='status'>
-              Thanks! Your mail should open with the message ready to send.
-            </p>
-          )}
 
           <form className='contact-form' onSubmit={handleSubmit} noValidate>
             <div className='contact-field'>
@@ -185,8 +230,12 @@ const Contact = () => {
             </div>
 
             <div className='contact-actions'>
-              <button type='submit' className='contact-btn contact-btn--primary'>
-                Send Message
+              <button
+                type='submit'
+                className='contact-btn contact-btn--primary'
+                disabled={status.type === 'sending'}
+              >
+                {status.type === 'sending' ? 'Sending…' : 'Send Message'}
               </button>
               <Link to='/projects' className='contact-btn contact-btn--ghost'>
                 View Projects
@@ -195,6 +244,14 @@ const Contact = () => {
           </form>
         </section>
       </div>
+
+      {status.type !== 'idle' && (
+        <Toast
+          type={status.type}
+          message={status.message}
+          onClose={() => setStatus({ type: 'idle', message: '' })}
+        />
+      )}
     </div>
   );
 };

@@ -59,11 +59,11 @@ const About = () => {
   const currentCompany = companies.find((c) => c.current);
   return (
     <div className='about-page'>
-      <header className='about-hero fade-up'>
+      <header className='about-hero' data-reveal='up'>
         <h1 className='sr-only'>About Ajaya Khanal</h1>
       </header>
 
-      <section className='about-idcard fade-up' aria-label='Credential card'>
+      <section className='about-idcard' data-reveal='scale' aria-label='Credential card'>
         <IDCard
           name='Ajaya Khanal'
           role='Software Engineer'
@@ -80,7 +80,7 @@ const About = () => {
         </div>
       </section>
 
-      <section className='about-section fade-up'>
+      <section className='about-section' data-reveal='up'>
         <h2 className='section-heading'>Skills &amp; Technologies</h2>
         <ul className='skills-list'>
           {skills.map((skill) => (
@@ -89,7 +89,7 @@ const About = () => {
         </ul>
       </section>
 
-      <section className='about-section fade-up'>
+      <section className='about-section' data-reveal='up'>
         <h2 className='section-heading'>Professional Experience</h2>
         <div className='timeline'>
           {companies.map((company) => (
@@ -111,7 +111,7 @@ const About = () => {
         </div>
       </section>
 
-      <section className='about-section fade-up'>
+      <section className='about-section' data-reveal='up'>
         <h2 className='section-heading'>Education</h2>
         <div className='timeline'>
           {education.map((edu) => (

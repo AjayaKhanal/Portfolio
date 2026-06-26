@@ -89,15 +89,14 @@ const Home = () => {
   return (
     <>
     <section className="home-hero" aria-label="Introduction">
-      {/* Decorative background: grid + soft glows. Non-interactive, hidden from AT. */}
+      {/* Decorative background glows. The box-grid is now global (background.css). */}
       <div className="hero-bg" aria-hidden="true">
-        <div className="hero-grid" />
         <div className="hero-glow hero-glow--one" />
         <div className="hero-glow hero-glow--two" />
       </div>
 
       {/* ---------- Left: identity, pitch, actions ---------- */}
-      <div className="hero-content">
+      <div className="hero-content" data-reveal="left">
         <span className="hero-status">
           <span className="hero-status-dot" />
           Available for new opportunities
@@ -177,7 +176,7 @@ const Home = () => {
       </div>
 
       {/* ---------- Right: stats + code-card profile presentation ---------- */}
-      <div className="hero-visual fade-in-right">
+      <div className="hero-visual" data-reveal="right">
         <div className="hero-visual-glow" aria-hidden="true" />
         <div className="hero-stats" aria-label="Highlights">
           {STATS.map((s) => (

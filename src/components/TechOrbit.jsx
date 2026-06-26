@@ -60,12 +60,12 @@ const TechOrbit = () => {
 
   return (
     <section className="tech-orbit-section" aria-label="Tech stack">
-      <div className="tech-orbit-head">
+      <div className="tech-orbit-head" data-reveal="up">
         <span className="tech-orbit-eyebrow">My Stack</span>
         <h2 className="tech-orbit-title">Technologies I work with</h2>
       </div>
 
-      <div className="tech-orbit" role="img" aria-label={`Tech stack: ${coderData.skills.join(', ')}`}>
+      <div className="tech-orbit" data-reveal="scale" role="img" aria-label={`Tech stack: ${coderData.skills.join(', ')}`}>
         <div className="orbit-track orbit-track--inner" aria-hidden="true" />
         <div className="orbit-track orbit-track--outer" aria-hidden="true" />
 

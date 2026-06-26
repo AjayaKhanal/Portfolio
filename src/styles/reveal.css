@@ -1,0 +1,39 @@
+/* =====================================================================
+   Scroll-reveal system
+   ---------------------------------------------------------------------
+   Elements are VISIBLE by default. The useScrollReveal hook adds the
+   `reveal-hidden` class only to elements that are below the fold; when
+   they scroll into view the class is removed and they transition in.
+   Because the default state is visible, content can never get stuck
+   blank if JS is slow, fails, or misses an element.
+   ===================================================================== */
+
+[data-reveal] {
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Hidden start state (added by JS only for off-screen elements) */
+[data-reveal].reveal-hidden {
+  opacity: 0;
+}
+
+/* Direction / style variants — value of the data-reveal attribute */
+[data-reveal='up'].reveal-hidden,
+[data-reveal=''].reveal-hidden { transform: translateY(28px); }
+[data-reveal='down'].reveal-hidden { transform: translateY(-28px); }
+[data-reveal='left'].reveal-hidden { transform: translateX(-34px); }
+[data-reveal='right'].reveal-hidden { transform: translateX(34px); }
+[data-reveal='scale'].reveal-hidden { transform: scale(0.94); }
+[data-reveal='fade'].reveal-hidden { transform: none; }
+
+/* Users who prefer reduced motion: never hide, never move. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

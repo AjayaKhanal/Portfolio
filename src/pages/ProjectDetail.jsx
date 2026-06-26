@@ -64,6 +64,7 @@ const ProjectDetail = () => {
             src={meta.image}
             alt={meta.title || "Project preview"}
             className="project-detail-image"
+            data-reveal="scale"
             onError={() => setImgError(true)}
           />
         ) : (
@@ -71,7 +72,7 @@ const ProjectDetail = () => {
         )}
 
         {meta && (
-          <header className="project-detail-header">
+          <header className="project-detail-header" data-reveal="up">
             {meta.title && <h1 className="project-detail-title">{meta.title}</h1>}
             {meta.description && (
               <p className="project-detail-tagline">{meta.description}</p>
@@ -112,7 +113,7 @@ const ProjectDetail = () => {
           </header>
         )}
 
-        <div className="project-detail-body">
+        <div className="project-detail-body" data-reveal="up">
           <Suspense fallback={<p>Loading project...</p>}>
             <MDXWrapper>
               <ProjectContent />

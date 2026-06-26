@@ -4,9 +4,13 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ScrollToTop from '../components/ScrollToTop'
 import { ThemeProvider } from '../components/ThemeProvider'
+import useScrollReveal from '../hooks/useScrollReveal'
+import '../styles/reveal.css'
 
 const Layout = ({children}) => {
   const location = useLocation();
+  // Re-arm scroll reveals on every route change so each page animates in.
+  useScrollReveal([location.pathname]);
   return (
     <>
     <ThemeProvider defaultTheme='system' enableSystem attribute='class' disableTransitionOnChange>

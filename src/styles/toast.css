@@ -1,0 +1,112 @@
+/* =====================================================================
+   Toast notification
+   ===================================================================== */
+.toast-viewport {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  pointer-events: none; /* let clicks pass through the empty area */
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 280px;
+  max-width: min(92vw, 400px);
+  padding: 0.85rem 0.9rem 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--ring-border);
+  background: var(--card-surface);
+  color: var(--text-foreground);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: toast-in 0.32s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Accent strip on the left, coloured per type */
+.toast::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--primary);
+}
+
+.toast { position: relative; }
+
+.toast--success::before { background: #22c55e; }
+.toast--error::before { background: #ef4444; }
+.toast--sending::before { background: var(--primary); }
+
+.toast-icon {
+  flex-shrink: 0;
+}
+.toast--success .toast-icon { color: #22c55e; }
+.toast--error .toast-icon { color: #ef4444; }
+.toast--sending .toast-icon { color: var(--primary); }
+
+.toast-icon--spin {
+  animation: toast-spin 0.9s linear infinite;
+}
+
+.toast-message {
+  flex: 1;
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text-foreground);
+}
+
+.toast-close {
+  flex-shrink: 0;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted-foreground);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.toast-close:hover {
+  background: var(--muted);
+  color: var(--text-foreground);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(110%); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toast-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Phones: stretch across the top */
+@media (max-width: 480px) {
+  .toast-viewport {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+  .toast {
+    min-width: 0;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast { animation: none; }
+  .toast-icon--spin { animation-duration: 1.6s; }
+}
