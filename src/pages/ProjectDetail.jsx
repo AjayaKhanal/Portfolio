@@ -2,6 +2,7 @@
 import React, { Suspense, lazy, useMemo, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { MDXWrapper } from "../components/MDXWraapper";
+import TechBadge from "../components/TechBadge";
 import { projectExists } from "../utils/mdxutils";
 import usePageMeta from "../utils/usePageMeta";
 import NotFound from "./NotFound";
@@ -81,7 +82,7 @@ const ProjectDetail = () => {
             {meta.techStack?.length > 0 && (
               <div className="project-detail-tech">
                 {meta.techStack.map((tech) => (
-                  <span key={tech} className="tech-badge">{tech}</span>
+                  <TechBadge key={tech} tech={tech} />
                 ))}
               </div>
             )}

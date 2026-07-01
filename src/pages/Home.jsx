@@ -1,11 +1,12 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { TypeAnimation } from 'react-type-animation'
-import { Github, Linkedin, Mail, Download, ArrowRight } from 'lucide-react'
+import { Download, ArrowRight } from 'lucide-react'
 import Button from '../components/Button'
 import Terminal from '../components/Terminal'
 import TechOrbit from '../components/TechOrbit'
 import TypingText from '../components/TypingText'
+import SocialLinks from '../components/SocialLinks'
 import { coderData } from '../components/CodeBlock'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/home.css'
@@ -60,11 +61,6 @@ const STATS = [
   { value: `${coderData.skills.length}`, label: 'Technologies' },
 ]
 
-const SOCIALS = [
-  { label: 'GitHub', href: 'https://github.com/', Icon: Github },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/', Icon: Linkedin },
-  { label: 'Email', href: 'mailto:ajayakhanal@example.com', Icon: Mail },
-]
 
 const Home = () => {
   const navigate = useNavigate()
@@ -148,22 +144,13 @@ const Home = () => {
           </Link>
         </div>
 
-        <ul className="hero-socials" aria-label="Social links">
-          {SOCIALS.map(({ label, href, Icon }) => (
-            <li key={label}>
-              <a
-                className="hero-social"
-                href={href}
-                target={href.startsWith('mailto:') ? undefined : '_blank'}
-                rel="noopener noreferrer"
-                aria-label={label}
-                title={label}
-              >
-                <Icon size={20} aria-hidden="true" />
-              </a>
-            </li>
-          ))}
-        </ul>
+        <SocialLinks
+          as="ul"
+          className="hero-socials"
+          linkClassName="hero-social"
+          iconSize={20}
+          withListItems
+        />
 
         {/* <div className="hero-tech">
           <span className="hero-tech-label">Tech I work with</span>

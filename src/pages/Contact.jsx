@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Toast from '../components/Toast'
+import SocialLinks from '../components/SocialLinks'
+import SectionHeading from '../components/SectionHeading'
+import { SOCIAL_LINKS } from '../constants/socials'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/contact.css'
 
@@ -23,11 +26,6 @@ const contactDetails = [
     href: null,
     icon: '📍',
   },
-];
-
-const socials = [
-  { label: 'GitHub', href: 'https://github.com/' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
 ];
 
 const initialForm = { name: '', email: '', subject: '', message: '' };
@@ -137,7 +135,7 @@ const Contact = () => {
 
       <div className='contact-grid'>
         <aside className='contact-info' data-reveal='left'>
-          <h2 className='section-heading'>Contact Details</h2>
+          <SectionHeading>Contact Details</SectionHeading>
           <ul className='contact-info-list'>
             {contactDetails.map((item) => (
               <li key={item.label} className='contact-info-item'>
@@ -154,24 +152,18 @@ const Contact = () => {
             ))}
           </ul>
 
-          <h2 className='section-heading'>Follow Me</h2>
-          <div className='contact-socials'>
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                className='contact-social-link'
-                href={social.href}
-                target='_blank'
-                rel='noopener noreferrer'
-              >
-                {social.label}
-              </a>
-            ))}
-          </div>
+          <SectionHeading>Follow Me</SectionHeading>
+          <SocialLinks
+            as='div'
+            variant='text'
+            className='contact-socials'
+            linkClassName='contact-social-link'
+            items={SOCIAL_LINKS.filter((s) => s.label !== 'Email')}
+          />
         </aside>
 
         <section className='contact-form-wrap' data-reveal='right'>
-          <h2 className='section-heading'>Send a Message</h2>
+          <SectionHeading>Send a Message</SectionHeading>
 
 
           <form className='contact-form' onSubmit={handleSubmit} noValidate>

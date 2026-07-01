@@ -1,0 +1,534 @@
+/* =====================================================================
+   Lightweight in-browser code editor
+   ===================================================================== */
+/* On the editor route, drop the centered 1200px container so the editor can
+   use the full width; keep top padding to clear the fixed 60px header. */
+.main--editor {
+  max-width: none;
+  width: 100%;
+  padding: 72px 14px 14px;
+  min-height: 100vh;
+}
+
+.editor-page {
+  /* Fill the full available space (width + height below the header). */
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.editor-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid color-mix(in srgb, #f59e0b 45%, var(--ring-border));
+  border-radius: 10px;
+  background: color-mix(in srgb, #f59e0b 12%, var(--card-surface));
+  color: var(--text-foreground);
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.editor-notice svg {
+  flex-shrink: 0;
+  color: #d97706;
+}
+
+.editor-shell {
+  display: flex;
+  flex: 1;
+  min-height: 460px;
+  border: 1px solid var(--ring-border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card-surface);
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Explorer (sidebar) ---------- */
+.editor-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--ring-border);
+  background: color-mix(in srgb, var(--muted) 55%, var(--card-surface));
+  overflow: hidden;
+}
+
+.explorer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--ring-border);
+}
+
+.explorer-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted-foreground);
+}
+
+.explorer-actions,
+.tree-actions {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.explorer-actions button,
+.tree-actions button {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted-foreground);
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.explorer-actions button:hover,
+.tree-actions button:hover {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary);
+}
+
+/* ---------- Tree ---------- */
+.tree-root,
+.tree-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree-root {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.4rem 0.3rem;
+}
+
+.tree-empty {
+  padding: 1rem 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text-muted-foreground);
+  line-height: 1.5;
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.4rem;
+  border-radius: 7px;
+  cursor: pointer;
+  color: var(--text-foreground);
+  user-select: none;
+  transition: background-color 0.15s ease;
+}
+
+.tree-row:hover {
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+.tree-row.is-active {
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+}
+
+.tree-caret,
+.tree-icon {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--text-muted-foreground);
+}
+
+.tree-caret {
+  width: 14px;
+}
+
+.tree-caret-spacer {
+  display: inline-block;
+  width: 14px;
+}
+
+.tree-row.is-active .tree-icon {
+  color: var(--primary);
+}
+
+.tree-name {
+  flex: 1;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tree-input {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.85rem;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  background: var(--background);
+  color: var(--text-foreground);
+  outline: none;
+}
+
+.tree-input.has-error {
+  border-color: #ef4444;
+}
+
+.tree-error {
+  padding-right: 0.5rem;
+  margin: 2px 0 4px;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: #ef4444;
+}
+
+.tree-actions {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.tree-row:hover .tree-actions {
+  opacity: 1;
+}
+
+/* ---------- Editor main ---------- */
+.editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--card-surface);
+}
+
+.editor-tabbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid var(--ring-border);
+  background: color-mix(in srgb, var(--muted) 35%, var(--card-surface));
+}
+
+.editor-path {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editor-path svg {
+  color: var(--text-muted-foreground);
+  flex-shrink: 0;
+}
+
+.editor-tab-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.editor-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--ring-border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-foreground);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.editor-action:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+/* Run button: green, filled */
+.editor-action--run {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+
+.editor-action--run:hover {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+/* ---------- Workspace (editor stacked above output) ---------- */
+.editor-workspace {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- Code area (CodeMirror) ---------- */
+.editor-area {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.editor-area .cm-host,
+.editor-area .cm-theme,
+.editor-area .cm-editor {
+  height: 100%;
+}
+
+.editor-area .cm-editor {
+  font-size: 13.5px;
+}
+
+.editor-area .cm-scroller {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  line-height: 1.6;
+}
+
+/* Let the theme own the editor surface, but soften the focus ring. */
+.editor-area .cm-editor.cm-focused {
+  outline: none;
+}
+
+/* ---------- Empty state ---------- */
+.editor-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted-foreground);
+}
+
+.editor-empty svg {
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+.editor-empty h2 {
+  font-size: 1.1rem;
+  color: var(--text-foreground);
+}
+
+.editor-empty p {
+  max-width: 320px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ---------- Run / output panel ---------- */
+.run-panel {
+  display: flex;
+  flex-direction: column;
+  height: 45%;
+  min-height: 170px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--ring-border);
+  background: var(--card-surface);
+}
+
+.run-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.5rem 0.3rem 0.6rem;
+  border-bottom: 1px solid var(--ring-border);
+  background: color-mix(in srgb, var(--muted) 35%, var(--card-surface));
+}
+
+.run-tabs {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.run-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted-foreground);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.run-tab:hover {
+  color: var(--text-foreground);
+}
+
+.run-tab.is-active {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary);
+}
+
+.run-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.run-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.run-newtab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--ring-border);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-foreground);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.run-newtab:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.run-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-muted-foreground);
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.run-icon-btn:hover {
+  background: var(--muted);
+  color: var(--text-foreground);
+}
+
+.run-body {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.run-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #ffffff;
+}
+
+.run-console {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 0.5rem 0.75rem;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.run-console-empty {
+  color: var(--text-muted-foreground);
+  font-style: italic;
+}
+
+.run-log {
+  padding: 0.18rem 0.2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ring-border) 50%, transparent);
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-foreground);
+}
+
+.run-log--error {
+  color: #ef4444;
+}
+
+.run-log--warn {
+  color: #d97706;
+}
+
+.run-note {
+  padding: 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted-foreground);
+}
+
+/* ---------- Responsive: stack explorer above editor ---------- */
+@media (max-width: 760px) {
+  .editor-shell {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .editor-sidebar {
+    width: 100%;
+    max-height: 230px;
+    border-right: none;
+    border-bottom: 1px solid var(--ring-border);
+  }
+
+  .editor-main {
+    height: 60vh;
+    min-height: 360px;
+  }
+
+  /* Actions are always visible on touch (no hover). */
+  .tree-actions {
+    opacity: 1;
+  }
+}

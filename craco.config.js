@@ -17,15 +17,25 @@ module.exports = {
         ],
       };
 
+      // Allow importing any file's raw source as a string via `?raw`
+      // (e.g. import src from './Button.jsx?raw'). Uses webpack 5's native
+      // asset/source — no extra loader needed.
+      const rawRule = {
+        resourceQuery: /raw/,
+        type: "asset/source",
+      };
+
       const oneOfRule = webpackConfig.module.rules.find((rule) =>
         Array.isArray(rule.oneOf)
       );
 
       if (oneOfRule) {
-        // Put our rule first so it wins over the catch-all file-loader.
+        // Put our rules first so they win over the catch-all file-loader.
+        // rawRule must precede the babel rule so `?raw` imports aren't transpiled.
         oneOfRule.oneOf.unshift(mdxRule);
+        oneOfRule.oneOf.unshift(rawRule);
       } else {
-        webpackConfig.module.rules.push(mdxRule);
+        webpackConfig.module.rules.push(mdxRule, rawRule);
       }
 
       return webpackConfig;

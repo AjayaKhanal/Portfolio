@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { GitHubCalendar } from 'react-github-calendar'
 import { useTheme } from 'next-themes'
 import { Github, ArrowUpRight } from 'lucide-react'
+import SectionHeading from './SectionHeading'
 import '../styles/github-activity.css'
 
 const YEARS = [2026, 2025, 2024, 2023]
@@ -22,7 +23,7 @@ const GitHubActivity = ({ username = 'ajayakhanal' }) => {
   return (
     <section className="github-activity" data-reveal="up" aria-label="GitHub activity">
       <div className="gh-head">
-        <h2 className="section-heading">GitHub Activity</h2>
+        <SectionHeading>GitHub Activity</SectionHeading>
         <a className="gh-profile-link" href={profileUrl} target="_blank" rel="noopener noreferrer">
           <Github size={16} aria-hidden="true" />
           @{username}

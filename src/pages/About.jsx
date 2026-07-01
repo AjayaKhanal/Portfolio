@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import IDCard from '../components/IDCard'
 import GitHubActivity from '../components/GitHubActivity'
+import SectionHeading from '../components/SectionHeading'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/about.css'
 
@@ -81,7 +82,7 @@ const About = () => {
       </section>
 
       <section className='about-section' data-reveal='up'>
-        <h2 className='section-heading'>Skills &amp; Technologies</h2>
+        <SectionHeading>Skills &amp; Technologies</SectionHeading>
         <ul className='skills-list'>
           {skills.map((skill) => (
             <li key={skill} className='skill-item'>{skill}</li>
@@ -90,7 +91,7 @@ const About = () => {
       </section>
 
       <section className='about-section' data-reveal='up'>
-        <h2 className='section-heading'>Professional Experience</h2>
+        <SectionHeading>Professional Experience</SectionHeading>
         <div className='timeline'>
           {companies.map((company) => (
             <div
@@ -112,7 +113,7 @@ const About = () => {
       </section>
 
       <section className='about-section' data-reveal='up'>
-        <h2 className='section-heading'>Education</h2>
+        <SectionHeading>Education</SectionHeading>
         <div className='timeline'>
           {education.map((edu) => (
             <div key={edu.school} className='timeline-item'>

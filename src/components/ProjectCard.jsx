@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Github, ExternalLink, ArrowRight } from "lucide-react";
+import TechBadge from "./TechBadge";
 import "../styles/projectCard.css";
 
 // Stable gradient per project, so the placeholder thumbnail is distinct but
@@ -68,10 +69,10 @@ const ProjectCard = ({ project, view = "grid" }) => {
         {techStack && (
           <div className="tech-stack">
             {techStack.slice(0, 4).map((tech, index) => (
-              <span key={index} className="tech-badge">{tech}</span>
+              <TechBadge key={index} tech={tech} />
             ))}
             {techStack.length > 4 && (
-              <span className="tech-badge tech-badge--more">+{techStack.length - 4}</span>
+              <TechBadge tech={`+${techStack.length - 4}`} className="tech-badge--more" />
             )}
           </div>
         )}
