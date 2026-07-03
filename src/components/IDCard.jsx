@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { MapPin, Building2, Link as LinkIcon, RotateCw, ArrowLeft } from 'lucide-react'
-import { coderData } from './CodeBlock'
+import { cn } from '../lib/utils'
 import '../styles/id-card.css'
 
 const initials = (name) =>
@@ -13,16 +13,18 @@ const initials = (name) =>
 
 const MAX_TILT = 12
 
-const IDCard = ({
-  name = coderData.name,
-  role = coderData.role,
-  location = coderData.location,
+const IDCard = React.forwardRef(({
+  name = '',
+  role = '',
+  location,
   company,
-  skills = coderData.skills,
+  skills = [],
   kicker = 'Developer Credential',
   description,
-  link = 'https://github.com/',
-}) => {
+  link = '#',
+  className,
+  ...rest
+}, ref) => {
   const cardRef = useRef(null)
   const [flipped, setFlipped] = useState(false)
   const [tilt, setTilt] = useState({
@@ -63,7 +65,7 @@ const IDCard = ({
   )}`
 
   return (
-    <div className="idcard-stage">
+    <div ref={ref} className={cn('idcard-stage', className)} {...rest}>
       <div
         ref={cardRef}
         className="idcard-tilt"
@@ -177,6 +179,8 @@ const IDCard = ({
       </div>
     </div>
   )
-}
+})
+
+IDCard.displayName = 'IDCard'
 
 export default IDCard

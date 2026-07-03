@@ -4,31 +4,9 @@ import Toast from '../components/Toast'
 import SocialLinks from '../components/SocialLinks'
 import SectionHeading from '../components/SectionHeading'
 import { SOCIAL_LINKS } from '../constants/socials'
+import { CONTACT_DETAILS, CONTACT_INITIAL_FORM } from '../constants/contact'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/contact.css'
-
-const contactDetails = [
-  {
-    label: 'Email',
-    value: 'ajayakhanal@example.com',
-    href: 'mailto:ajayakhanal@example.com',
-    icon: '✉️',
-  },
-  {
-    label: 'Phone',
-    value: '+977 98XXXXXXXX',
-    href: 'tel:+97798000000',
-    icon: '📞',
-  },
-  {
-    label: 'Location',
-    value: 'Kathmandu, Nepal',
-    href: null,
-    icon: '📍',
-  },
-];
-
-const initialForm = { name: '', email: '', subject: '', message: '' };
 
 // Web3Forms delivers submissions straight to the email you registered the key
 // with — no backend needed. Get a free key at https://web3forms.com (enter your
@@ -40,7 +18,7 @@ const ACCESS_KEY =
 
 const Contact = () => {
   usePageMeta('Contact', "Get in touch with Ajaya Khanal — let's work together on your next project.");
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState(CONTACT_INITIAL_FORM);
   const [errors, setErrors] = useState({});
   // status: { type: 'idle' | 'sending' | 'success' | 'error', message: string }
   const [status, setStatus] = useState({ type: 'idle', message: '' });
@@ -105,7 +83,7 @@ const Contact = () => {
           type: 'success',
           message: "Thanks for reaching out! Your message has been sent — I'll get back to you soon.",
         });
-        setForm(initialForm);
+        setForm(CONTACT_INITIAL_FORM);
         setErrors({});
       } else {
         setStatus({
@@ -137,7 +115,7 @@ const Contact = () => {
         <aside className='contact-info' data-reveal='left'>
           <SectionHeading>Contact Details</SectionHeading>
           <ul className='contact-info-list'>
-            {contactDetails.map((item) => (
+            {CONTACT_DETAILS.map((item) => (
               <li key={item.label} className='contact-info-item'>
                 <span className='contact-info-icon' aria-hidden='true'>{item.icon}</span>
                 <div>
@@ -239,7 +217,7 @@ const Contact = () => {
 
       {status.type !== 'idle' && (
         <Toast
-          type={status.type}
+          variant={status.type}
           message={status.message}
           onClose={() => setStatus({ type: 'idle', message: '' })}
         />

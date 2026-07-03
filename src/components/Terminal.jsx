@@ -1,24 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { coderData } from './CodeBlock'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { cn } from '../lib/utils'
 import '../styles/terminal.css'
 
-const PROMPT_USER = 'ajaya@portfolio'
-const PROMPT_PATH = '~'
-
-const COMMANDS = {
+// Build the command set from a resolved profile so the terminal stays reusable.
+const buildCommands = (p) => ({
   help: {
     description: 'List all available commands',
-    run: () => ({
-      type: 'help',
-    }),
+    run: () => ({ type: 'help' }),
   },
   whoami: {
     description: 'Show name and current role',
     run: () => ({
       type: 'lines',
       lines: [
-        { text: coderData.name, className: 'term-out--accent' },
-        { text: `// ${coderData.role}`, className: 'term-out--muted' },
+        { text: p.name, className: 'term-out--accent' },
+        { text: `// ${p.role}`, className: 'term-out--muted' },
       ],
     }),
   },
@@ -26,51 +22,47 @@ const COMMANDS = {
     description: 'A short introduction',
     run: () => ({
       type: 'lines',
-      lines: [
-        {
-          text: 'Building scalable, efficient software with clean architecture.',
-          className: 'term-out--plain',
-        },
-      ],
+      lines: [{ text: p.about, className: 'term-out--plain' }],
     }),
   },
   skills: {
     description: 'List technologies and tools',
-    run: () => ({ type: 'chips', chips: coderData.skills }),
+    run: () => ({ type: 'chips', chips: p.skills }),
   },
   location: {
     description: 'Where I am based',
     run: () => ({
       type: 'lines',
-      lines: [{ text: coderData.location, className: 'term-out--accent' }],
+      lines: [{ text: p.location, className: 'term-out--accent' }],
     }),
   },
   socials: {
     description: 'Show social and contact links',
-    run: () => ({
-      type: 'links',
-      links: [
-        { label: 'GitHub', href: 'https://github.com/' },
-        { label: 'LinkedIn', href: 'https://www.linkedin.com/' },
-        { label: 'Email', href: 'mailto:ajayakhanal@example.com' },
-      ],
-    }),
+    run: () => ({ type: 'links', links: p.links }),
   },
   clear: {
     description: 'Clear the terminal screen',
     run: () => ({ type: 'clear' }),
   },
-}
+})
 
-const WELCOME = {
-  type: 'lines',
-  lines: [
-    { text: `Welcome to ${coderData.name}'s terminal.`, className: 'term-out--accent' },
-    { text: "Type 'help' and press Enter to see what you can do.", className: 'term-out--muted' },
-  ],
-}
+// The terminal is presentational — the caller passes a `profile` object with
+// the data it should display: { user, path, shell, name, role, location,
+// about, skills, links }.
+const Terminal = React.forwardRef(({ profile = {}, className, ...rest }, ref) => {
+  const p = profile
+  const COMMANDS = useMemo(() => buildCommands(p), [p])
+  const WELCOME = useMemo(
+    () => ({
+      type: 'lines',
+      lines: [
+        { text: `Welcome to ${p.name}'s terminal.`, className: 'term-out--accent' },
+        { text: "Type 'help' and press Enter to see what you can do.", className: 'term-out--muted' },
+      ],
+    }),
+    [p]
+  )
 
-const Terminal = () => {
   const [history, setHistory] = useState([{ command: null, result: WELCOME }])
   const [input, setInput] = useState('')
   const [pastCommands, setPastCommands] = useState([])
@@ -158,9 +150,9 @@ const Terminal = () => {
 
   const renderPrompt = () => (
     <span className="term-prompt">
-      <span className="term-prompt-user">{PROMPT_USER}</span>
+      <span className="term-prompt-user">{p.user}</span>
       <span className="term-prompt-sep">:</span>
-      <span className="term-prompt-path">{PROMPT_PATH}</span>
+      <span className="term-prompt-path">{p.path}</span>
       <span className="term-prompt-symbol">$</span>
     </span>
   )
@@ -224,10 +216,12 @@ const Terminal = () => {
 
   return (
     <div
-      className="terminal"
+      ref={ref}
+      className={cn('terminal', className)}
       onClick={focusInput}
       role="group"
-      aria-label={`Interactive terminal for ${coderData.name}`}
+      aria-label={`Interactive terminal for ${p.name}`}
+      {...rest}
     >
       <div className="terminal-bar">
         <div className="terminal-dots" aria-hidden="true">
@@ -236,10 +230,10 @@ const Terminal = () => {
           <span className="terminal-dot terminal-dot--green" />
         </div>
         <span className="terminal-title">
-          {PROMPT_USER}: {PROMPT_PATH}
+          {p.user}: {p.path}
         </span>
         <span className="terminal-shell" aria-hidden="true">
-          zsh
+          {p.shell}
         </span>
       </div>
 
@@ -274,6 +268,8 @@ const Terminal = () => {
       </div>
     </div>
   )
-}
+})
+
+Terminal.displayName = 'Terminal'
 
 export default Terminal

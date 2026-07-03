@@ -82,7 +82,7 @@ const ProjectDetail = () => {
             {meta.techStack?.length > 0 && (
               <div className="project-detail-tech">
                 {meta.techStack.map((tech) => (
-                  <TechBadge key={tech} tech={tech} />
+                  <TechBadge key={tech}>{tech}</TechBadge>
                 ))}
               </div>
             )}

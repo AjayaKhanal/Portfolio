@@ -9,6 +9,14 @@ import Editor from "./pages/Editor";
 import Components from "./pages/Components";
 import ComponentDetail from "./pages/ComponentDetail";
 import NotFound from "./pages/NotFound";
+import { useDeveloperMode } from "./context/DeveloperModeContext";
+
+// Blocks access to developer-only pages unless developer mode is on — including
+// direct URL entry, which falls through to the Not Found page.
+const RequireDevMode = ({ children }) => {
+    const { devMode } = useDeveloperMode();
+    return devMode ? children : <NotFound />;
+};
 
 const RoutesList=()=>{
     return(
@@ -19,9 +27,9 @@ const RoutesList=()=>{
         <Route path="/projects" element={<Projects />} />
         <Route path="/projects/:slug" element={<ProjectDetail />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/editor" element={<Editor />} />
-        <Route path="/components" element={<Components />} />
-        <Route path="/components/:id" element={<ComponentDetail />} />
+        <Route path="/editor" element={<RequireDevMode><Editor /></RequireDevMode>} />
+        <Route path="/components" element={<RequireDevMode><Components /></RequireDevMode>} />
+        <Route path="/components/:id" element={<RequireDevMode><ComponentDetail /></RequireDevMode>} />
         <Route path="*" element={<NotFound />} />
     </Routes>
     )

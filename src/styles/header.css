@@ -176,6 +176,15 @@
     display: flex;
   }
 
+  /* Compact the dev-mode toggle in the bar: icon + switch only. */
+  .header-devmode .devmode-label {
+    display: none;
+  }
+
+  .header-devmode {
+    padding: 0.35rem 0.5rem;
+  }
+
   /* ---- Slide-down nav panel ---- */
   .header-center {
     position: fixed;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Eye, Code2, Copy, FlaskConical } from 'lucide-react'
+import { Eye, Code2, Copy, FlaskConical, RotateCcw } from 'lucide-react'
 
 /*
  * ComponentPreview — one demo card in the /components gallery.
@@ -7,6 +7,8 @@ import { Eye, Code2, Copy, FlaskConical } from 'lucide-react'
  */
 const ComponentPreview = ({ entry, onCopy, onTryIt }) => {
   const [tab, setTab] = useState('preview')
+  // Bumping this remounts <Demo />, resetting its internal state.
+  const [previewKey, setPreviewKey] = useState(0)
   const { Demo, code, source, playground } = entry
   // Prefer the component's actual source; fall back to the usage snippet.
   const codeText = source || code
@@ -50,7 +52,23 @@ const ComponentPreview = ({ entry, onCopy, onTryIt }) => {
       <div className="comp-body">
         {tab === 'preview' ? (
           <div className="comp-preview">
-            <Demo />
+            <button
+              type="button"
+              className="comp-refresh"
+              onClick={() => setPreviewKey((k) => k + 1)}
+              title="Refresh preview"
+              aria-label="Refresh preview"
+            >
+              {/* key remounts the icon each refresh so the spin replays. */}
+              <RotateCcw key={previewKey} size={14} className="comp-refresh-icon" aria-hidden="true" />
+            </button>
+            {/* key remounts the stage each refresh: replays the flash animation
+                (visible feedback even for static demos) and resets the demo.
+                previewKey lets demos with session guards (e.g. TypingText) mint
+                a fresh identity so they replay. */}
+            <div className="comp-preview-stage" key={previewKey}>
+              <Demo previewKey={previewKey} />
+            </div>
           </div>
         ) : (
           <pre className="comp-code">

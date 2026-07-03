@@ -3,25 +3,21 @@ import { GitHubCalendar } from 'react-github-calendar'
 import { useTheme } from 'next-themes'
 import { Github, ArrowUpRight } from 'lucide-react'
 import SectionHeading from './SectionHeading'
+import { cn } from '../lib/utils'
+import { GITHUB_YEARS, GITHUB_CALENDAR_THEME } from '../constants/githubActivity'
 import '../styles/github-activity.css'
 
-const YEARS = [2026, 2025, 2024, 2023]
-
-const calendarTheme = {
-  light: ['#ebedf0', '#bcd9ff', '#7cb4ff', '#3f8bff', '#1f6feb'],
-  dark: ['#161b22', '#0d2f5e', '#15489c', '#1f6feb', '#4f9bff'],
-}
-
-const GitHubActivity = ({ username = 'ajayakhanal' }) => {
+const GitHubActivity = React.forwardRef(
+  ({ username = 'ajayakhanal', years = GITHUB_YEARS, className, ...rest }, ref) => {
   const { resolvedTheme } = useTheme()
-  const [year, setYear] = useState(YEARS[0])
+  const [year, setYear] = useState(years[0])
 
   const profileUrl = `https://github.com/${username}`
   const stats = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=true&bg_color=00000000&title_color=2f81f7&icon_color=2f81f7&text_color=8b949e&hide=issues`
   const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&hide_border=true&bg_color=00000000&title_color=2f81f7&text_color=8b949e`
 
   return (
-    <section className="github-activity" data-reveal="up" aria-label="GitHub activity">
+    <section ref={ref} className={cn('github-activity', className)} data-reveal="up" aria-label="GitHub activity" {...rest}>
       <div className="gh-head">
         <SectionHeading>GitHub Activity</SectionHeading>
         <a className="gh-profile-link" href={profileUrl} target="_blank" rel="noopener noreferrer">
@@ -33,7 +29,7 @@ const GitHubActivity = ({ username = 'ajayakhanal' }) => {
 
       <div className="gh-panel">
         <div className="gh-years" role="group" aria-label="Select year">
-          {YEARS.map((y) => (
+          {years.map((y) => (
             <button
               key={y}
               type="button"
@@ -50,7 +46,7 @@ const GitHubActivity = ({ username = 'ajayakhanal' }) => {
           <GitHubCalendar
             username={username}
             year={year}
-            theme={calendarTheme}
+            theme={GITHUB_CALENDAR_THEME}
             colorScheme={resolvedTheme === 'dark' ? 'dark' : 'light'}
             blockSize={13}
             blockMargin={4}
@@ -70,6 +66,9 @@ const GitHubActivity = ({ username = 'ajayakhanal' }) => {
       </div>
     </section>
   )
-}
+  }
+)
+
+GitHubActivity.displayName = 'GitHubActivity'
 
 export default GitHubActivity

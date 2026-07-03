@@ -44,6 +44,22 @@ const ComponentDetail = () => {
         <p className="cd-desc">{entry.description}</p>
       </header>
 
+      {/* Shared conventions every component follows (shadcn/antd-style API). */}
+      <div className="cd-conventions" aria-label="Shared API conventions">
+        <span className="cd-conv-label">API conventions</span>
+        <div className="cd-conv-chips">
+          <span className="cd-conv-chip">
+            Forwards <code>ref</code>
+          </span>
+          <span className="cd-conv-chip">
+            Merges <code>className</code>
+          </span>
+          <span className="cd-conv-chip">
+            Spreads <code>…rest</code> props
+          </span>
+        </div>
+      </div>
+
       {/* Preview / Code tabs + Copy + Try it out */}
       <ComponentPreview
         entry={entry}
@@ -104,7 +120,7 @@ const ComponentDetail = () => {
         </section>
       )}
 
-      {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
+      {toast && <Toast variant={toast.type} message={toast.message} onClose={() => setToast(null)} />}
     </div>
   )
 }

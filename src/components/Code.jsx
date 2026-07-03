@@ -1,17 +1,26 @@
 import React from "react";
-import { coderData } from "./CodeBlock";
+import { cn } from "../lib/utils";
 
-export function CodeProfile() {
+export function CodeProfile({ data, fileName, ...rest }) {
   return (
     <div className="flex items-center justify-center font-sans bg-white dark:bg-zinc-950">
-      <CoderProfileCard />
+      <CoderProfileCard data={data} fileName={fileName} {...rest} />
     </div>
   );
 }
 
-export const CoderProfileCard = () => {
+export const CoderProfileCard = React.forwardRef(
+  ({ data = {}, fileName = "code.js", className, ...rest }, ref) => {
+  const skills = data.skills || [];
   return (
-    <div className="max-w-2xl w-full mx-auto shadow-md dark:from-[#000000] dark:to-[#0a0d37] border-zinc-300 bg-zinc-100 dark:bg-zinc-900 dark:border-[#1b2c68a0] relative rounded-lg border shadow-lg">
+    <div
+      ref={ref}
+      className={cn(
+        "max-w-2xl w-full mx-auto shadow-md dark:from-[#000000] dark:to-[#0a0d37] border-zinc-300 bg-zinc-100 dark:bg-zinc-900 dark:border-[#1b2c68a0] relative rounded-lg border shadow-lg",
+        className
+      )}
+      {...rest}
+    >
       <div className="flex flex-row">
         <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-pink-500 to-violet-600 opacity-70 dark:opacity-100"></div>
         <div className="h-[2px] w-full bg-gradient-to-r from-violet-600 to-transparent opacity-70 dark:opacity-100"></div>
@@ -24,7 +33,7 @@ export const CoderProfileCard = () => {
           <div className="h-3 w-3 rounded-full bg-green-400"></div>
         </div>
         <div className="text-xs text-zinc-700 dark:text-gray-400 font-mono">
-          ajaya.js
+          {fileName}
         </div>
       </div>
 
@@ -56,7 +65,7 @@ export const CoderProfileCard = () => {
               <span className="text-zinc-800 dark:text-white">name:</span>
               <span className="text-zinc-600 dark:text-gray-400">&#39;</span>
               <span className="text-green-600 dark:text-green-400">
-                {coderData.name}
+                {data.name}
               </span>
               <span className="text-zinc-600 dark:text-gray-400">&#39;,</span>
             </div>
@@ -64,7 +73,7 @@ export const CoderProfileCard = () => {
               <span className="text-zinc-800 dark:text-white">role:</span>
               <span className="text-zinc-600 dark:text-gray-400">&#39;</span>
               <span className="text-green-600 dark:text-green-400">
-                {coderData.role}
+                {data.role}
               </span>
               <span className="text-zinc-600 dark:text-gray-400">&#39;,</span>
             </div>
@@ -72,7 +81,7 @@ export const CoderProfileCard = () => {
               <span className="text-zinc-800 dark:text-white">country:</span>
               <span className="text-zinc-600 dark:text-gray-400">&#39;</span>
               <span className="text-green-600 dark:text-green-400">
-                {coderData.location}
+                {data.location}
               </span>
               <span className="text-zinc-600 dark:text-gray-400">&#39;,</span>
             </div>
@@ -80,7 +89,7 @@ export const CoderProfileCard = () => {
               <span className="text-zinc-800 dark:text-white">skills:</span>
               <span className="text-zinc-600 dark:text-gray-400">{"["}</span>
               <div className="pl-6 flex flex-wrap">
-                {coderData.skills.map((skill, index) => (
+                {skills.map((skill, index) => (
                   <span key={skill} className="mr-1">
                     <span className="text-zinc-700 dark:text-gray-400">
                       &#39;
@@ -91,7 +100,7 @@ export const CoderProfileCard = () => {
                     <span className="text-zinc-700 dark:text-gray-400">
                       &#39;
                     </span>
-                    {index < coderData.skills.length - 1 && (
+                    {index < skills.length - 1 && (
                       <span className="text-zinc-800 dark:text-gray-400">
                         ,{" "}
                       </span>
@@ -115,4 +124,7 @@ export const CoderProfileCard = () => {
       </div>
     </div>
   );
-};
+  }
+);
+
+CoderProfileCard.displayName = "CoderProfileCard";

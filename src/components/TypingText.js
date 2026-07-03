@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, forwardRef } from 'react';
+import { cn } from '../lib/utils';
 import '../styles/typingText.css';
 
 // Tracks which instances have already played their typing animation, so it only
@@ -6,7 +7,7 @@ import '../styles/typingText.css';
 // the component). Resets on a full page reload.
 const typedIds = new Set();
 
-const TypingText = ({ content, speed = 40, className = 'typing-text', id = 'default' }) => {
+const TypingText = forwardRef(({ content, speed = 40, className = 'typing-text', id = 'default', ...rest }, ref) => {
   // Normalise mixed string / { text, className } items into uniform segments.
   const segments = useMemo(
     () =>
@@ -56,7 +57,7 @@ const TypingText = ({ content, speed = 40, className = 'typing-text', id = 'defa
   };
 
   return (
-    <p className={className}>
+    <p ref={ref} className={cn(className)} {...rest}>
       {/* Ghost: full text, hidden — reserves the final height so the card
           doesn't grow line-by-line while typing. */}
       <span className="typing-ghost" aria-hidden="true">
@@ -69,6 +70,8 @@ const TypingText = ({ content, speed = 40, className = 'typing-text', id = 'defa
       </span>
     </p>
   );
-};
+});
+
+TypingText.displayName = 'TypingText';
 
 export default TypingText;

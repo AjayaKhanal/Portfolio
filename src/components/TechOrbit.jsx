@@ -1,29 +1,7 @@
 import React from 'react'
-import {
-  SiSharp,
-  SiDotnet,
-  SiReact,
-  SiJavascript,
-  SiCss,
-  SiHtml5,
-  SiGit,
-  SiGithub,
-} from 'react-icons/si'
-import { FaDatabase } from 'react-icons/fa'
-import { coderData } from './CodeBlock'
+import { cn } from '../lib/utils'
+import { TECH_ICONS, TECH_ICON_FALLBACK } from '../constants/techOrbit'
 import '../styles/tech-orbit.css'
-
-const ICONS = {
-  'C#': { Icon: SiSharp, color: '#a179dc' },
-  Dotnet: { Icon: SiDotnet, color: '#7c4dff' },
-  SQL: { Icon: FaDatabase, color: '#3fa9f5' },
-  React: { Icon: SiReact, color: '#61dafb' },
-  JavaScript: { Icon: SiJavascript, color: '#f7df1e' },
-  CSS: { Icon: SiCss, color: '#663399' },
-  GitHub: { Icon: SiGithub, color: '#e6edf3' },
-  HTML: { Icon: SiHtml5, color: '#e34f26' },
-  Git: { Icon: SiGit, color: '#f05032' },
-}
 
 const splitRings = (skills) => {
   const innerCount = Math.min(4, Math.ceil(skills.length / 2))
@@ -37,7 +15,7 @@ const Ring = ({ skills, variant }) => (
   <div className={`orbit-ring orbit-ring--${variant}`}>
     {skills.map((skill, i) => {
       const angle = (360 / skills.length) * i
-      const meta = ICONS[skill] || { Icon: FaDatabase, color: '#8b949e' }
+      const meta = TECH_ICONS[skill] || TECH_ICON_FALLBACK
       const { Icon, color } = meta
       return (
         <div key={skill} className="orbit-node" style={{ '--angle': `${angle}deg` }}>
@@ -55,17 +33,23 @@ const Ring = ({ skills, variant }) => (
   </div>
 )
 
-const TechOrbit = () => {
-  const { inner, outer } = splitRings(coderData.skills)
+const TechOrbit = React.forwardRef(({
+  skills = [],
+  title = 'Technologies I work with',
+  eyebrow = 'My Stack',
+  className,
+  ...rest
+}, ref) => {
+  const { inner, outer } = splitRings(skills)
 
   return (
-    <section className="tech-orbit-section" aria-label="Tech stack">
+    <section ref={ref} className={cn('tech-orbit-section', className)} aria-label="Tech stack" {...rest}>
       <div className="tech-orbit-head" data-reveal="up">
-        <span className="tech-orbit-eyebrow">My Stack</span>
-        <h2 className="tech-orbit-title">Technologies I work with</h2>
+        <span className="tech-orbit-eyebrow">{eyebrow}</span>
+        <h2 className="tech-orbit-title">{title}</h2>
       </div>
 
-      <div className="tech-orbit" data-reveal="scale" role="img" aria-label={`Tech stack: ${coderData.skills.join(', ')}`}>
+      <div className="tech-orbit" data-reveal="scale" role="img" aria-label={`Tech stack: ${skills.join(', ')}`}>
         <div className="orbit-track orbit-track--inner" aria-hidden="true" />
         <div className="orbit-track orbit-track--outer" aria-hidden="true" />
 
@@ -78,6 +62,8 @@ const TechOrbit = () => {
       </div>
     </section>
   )
-}
+})
+
+TechOrbit.displayName = 'TechOrbit'
 
 export default TechOrbit

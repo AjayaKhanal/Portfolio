@@ -4,6 +4,7 @@ import {getAllProjects} from '../utils/mdxutils'
 import ProjectCard from '../components/ProjectCard'
 import SearchBar from '../components/SearchBar'
 import Pagination from '../components/Pagination'
+import { PROJECTS_PER_PAGE } from '../constants/projects'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/projects.css';
 
@@ -17,7 +18,6 @@ const Projects = () => {
   const [error, setError] = useState(null);
   // 'grid' (multiple per row) or 'list' (one per row); remembered between visits.
   const [view, setView] = useState(() => localStorage.getItem('projectsView') || 'grid');
-  const perPage=6;
 
   useEffect(() => {
     localStorage.setItem('projectsView', view);
@@ -52,14 +52,14 @@ const Projects = () => {
   );
 
   const paginated = useMemo(()=>{
-    const start = (currentPage -1)* perPage;
-    return filtered.slice(start, start+perPage)
+    const start = (currentPage -1)* PROJECTS_PER_PAGE;
+    return filtered.slice(start, start+PROJECTS_PER_PAGE)
   }, [filtered, currentPage]);
 
   return (
     <div className='projects-page'>
       <div className='top-bar anim-down'>
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+        <SearchBar defaultValue={searchQuery} onSearch={setSearchQuery} placeholder="Search projects…" />
       </div>
 
       {!isLoading && !error && tags.length > 1 && (
@@ -79,7 +79,7 @@ const Projects = () => {
 
       {isLoading && (
         <div className="projects-grid">
-          {Array.from({ length: perPage }).map((_, i) => (
+          {Array.from({ length: PROJECTS_PER_PAGE }).map((_, i) => (
             <div className="project-skeleton" key={i} aria-hidden="true">
               <div className="skeleton-line skeleton-title" />
               <div className="skeleton-line" />
@@ -145,7 +145,7 @@ const Projects = () => {
         <div data-reveal="up">
           <Pagination
             current={currentPage}
-            total={Math.ceil(filtered.length / perPage)}
+            total={Math.ceil(filtered.length / PROJECTS_PER_PAGE)}
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>

@@ -1,30 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Monitor, Moon, Sun } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { cn } from '../lib/utils';
 import { useTheme } from 'next-themes';
+import { THEME_OPTIONS } from '../constants/themes';
 import '../styles/themeSwitcher.css';
 
-const themes = [
-  {
-    key: 'system',
-    icon: Monitor,
-    label: 'System theme',
-  },
-  {
-    key: 'light',
-    icon: Sun,
-    label: 'Light theme',
-  },
-  {
-    key: 'dark',
-    icon: Moon,
-    label: 'Dark theme',
-  },
-];
-
-export const ThemeSwitcher = ({ className }) => {
+export const ThemeSwitcher = React.forwardRef(({ className, ...rest }, ref) => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -35,13 +17,15 @@ export const ThemeSwitcher = ({ className }) => {
   if (!mounted) return null;
 
   // Position the sliding highlight under the active option.
-  const activeIndex = Math.max(0, themes.findIndex((t) => t.key === theme));
+  const activeIndex = Math.max(0, THEME_OPTIONS.findIndex((t) => t.key === theme));
 
   return (
     <div
+      ref={ref}
       role="radiogroup"
       aria-label="Theme Switcher"
       className={cn('theme-switch', className)}
+      {...rest}
     >
       {/* Sliding highlight that animates to the active option */}
       <span
@@ -50,7 +34,7 @@ export const ThemeSwitcher = ({ className }) => {
         aria-hidden="true"
       />
 
-      {themes.map(({ key, icon: Icon, label }) => {
+      {THEME_OPTIONS.map(({ key, icon: Icon, label }) => {
         const isActive = theme === key;
         return (
           <button
@@ -69,4 +53,6 @@ export const ThemeSwitcher = ({ className }) => {
       })}
     </div>
   );
-};
+});
+
+ThemeSwitcher.displayName = 'ThemeSwitcher';

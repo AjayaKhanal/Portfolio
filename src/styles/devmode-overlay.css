@@ -1,0 +1,189 @@
+/* =====================================================================
+   Developer-mode transition overlay — a terminal/CRT flash on toggle.
+   ===================================================================== */
+.devx-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(2, 6, 23, 0.82), rgba(2, 6, 23, 0.96));
+  backdrop-filter: blur(3px);
+  animation: devx-fade var(--devx-duration) ease forwards;
+  --devx-duration: 1.5s;
+}
+
+/* Accent differs by direction: green "boot" vs red "power-down". */
+.devx-overlay--on {
+  --devx-accent: #22e07a;
+  --devx-accent-soft: rgba(34, 224, 122, 0.5);
+}
+.devx-overlay--off {
+  --devx-accent: #ff4d4d;
+  --devx-accent-soft: rgba(255, 77, 77, 0.5);
+}
+
+/* The card is scaled down flat ("CRT power off") at the very end when exiting. */
+.devx-overlay--off .devx-panel {
+  animation: devx-panel-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both,
+    devx-crt-off 0.35s ease-in 1.1s forwards;
+}
+
+/* ---------- Scanlines ---------- */
+.devx-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.05) 0,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: devx-scan 0.5s linear infinite;
+  opacity: 0.6;
+}
+
+/* ---------- Sweeping beam ---------- */
+.devx-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 40vh;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--devx-accent-soft),
+    transparent
+  );
+  filter: blur(6px);
+  opacity: 0;
+  animation: devx-sweep 1.1s ease-in-out forwards;
+}
+
+/* ---------- Centered panel ---------- */
+.devx-panel {
+  position: relative;
+  text-align: center;
+  color: var(--devx-accent);
+  font-family: 'Courier New', ui-monospace, monospace;
+  animation: devx-panel-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.devx-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 78px;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  color: var(--devx-accent);
+  border: 1px solid var(--devx-accent-soft);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: 0 0 24px var(--devx-accent-soft), inset 0 0 18px rgba(0, 0, 0, 0.4);
+}
+
+.devx-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em; /* balance the trailing letter-spacing */
+  text-shadow: 0 0 12px var(--devx-accent-soft);
+  animation: devx-glitch 0.4s steps(2) 2;
+}
+
+.devx-status {
+  margin: 0.9rem 0 0;
+  font-size: clamp(0.95rem, 3vw, 1.3rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #e5e7eb;
+}
+
+.devx-prompt {
+  color: var(--devx-accent);
+}
+
+.devx-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  background: var(--devx-accent);
+  box-shadow: 0 0 10px var(--devx-accent-soft);
+  animation: devx-blink 0.7s steps(2, start) infinite;
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes devx-fade {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes devx-panel-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+    filter: blur(8px);
+    letter-spacing: 0.6em;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes devx-crt-off {
+  0% { transform: scale(1); opacity: 1; }
+  60% { transform: scaleY(0.02) scaleX(1); opacity: 1; }
+  100% { transform: scaleY(0.02) scaleX(0); opacity: 0; }
+}
+
+@keyframes devx-sweep {
+  0% { transform: translateY(-60vh); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+@keyframes devx-scan {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 3px; }
+}
+
+@keyframes devx-glitch {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9; }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
+  80% { transform: translateX(2px); }
+}
+
+@keyframes devx-blink {
+  50% { opacity: 0; }
+}
+
+/* ---------- Reduced motion: keep a calm fade only ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .devx-scanlines,
+  .devx-sweep {
+    display: none;
+  }
+  .devx-title,
+  .devx-panel,
+  .devx-overlay--off .devx-panel {
+    animation: none;
+  }
+  .devx-cursor {
+    animation: none;
+  }
+}

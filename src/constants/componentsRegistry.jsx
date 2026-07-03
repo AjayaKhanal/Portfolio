@@ -8,6 +8,12 @@ import SearchBar from '../components/SearchBar'
 import Toast from '../components/Toast'
 import ProjectCard from '../components/ProjectCard'
 import { ThemeSwitcher } from '../components/Themes'
+import TypingText from '../components/TypingText'
+import TechOrbit from '../components/TechOrbit'
+import Terminal from '../components/Terminal'
+import IDCard from '../components/IDCard'
+import GitHubActivity from '../components/GitHubActivity'
+import { CoderProfileCard } from '../components/Code'
 // Raw source of each component (webpack ?raw -> string) for the "Code" tab.
 import buttonSrc from '../components/Button.jsx?raw'
 import themeSrc from '../components/Themes.jsx?raw'
@@ -18,6 +24,12 @@ import projectCardSrc from '../components/ProjectCard.jsx?raw'
 import paginationSrc from '../components/Pagination.jsx?raw'
 import searchBarSrc from '../components/SearchBar.jsx?raw'
 import toastSrc from '../components/Toast.jsx?raw'
+import typingTextSrc from '../components/TypingText.js?raw'
+import techOrbitSrc from '../components/TechOrbit.jsx?raw'
+import terminalSrc from '../components/Terminal.jsx?raw'
+import idCardSrc from '../components/IDCard.jsx?raw'
+import gitHubActivitySrc from '../components/GitHubActivity.jsx?raw'
+import coderProfileCardSrc from '../components/Code.jsx?raw'
 import '../styles/pagination.css'
 
 /*
@@ -73,7 +85,30 @@ const sampleProject = {
   image: '',
 }
 
-export const COMPONENT_CATEGORIES = ['Actions', 'Display', 'Navigation', 'Inputs', 'Feedback']
+// Generic, non-portfolio-specific data so the reusable components demo cleanly.
+const sampleProfile = {
+  name: 'Jane Doe',
+  role: 'Frontend Engineer',
+  location: 'Remote',
+  skills: ['React', 'TypeScript', 'CSS', 'Node.js', 'GraphQL', 'Jest'],
+}
+
+const sampleTerminalProfile = {
+  user: 'jane@demo',
+  path: '~',
+  shell: 'zsh',
+  name: 'Jane Doe',
+  role: 'Frontend Engineer',
+  location: 'Remote',
+  about: 'I build fast, accessible web apps with a focus on great UX.',
+  skills: sampleProfile.skills,
+  links: [
+    { label: 'GitHub', href: 'https://github.com/' },
+    { label: 'Website', href: 'https://example.com' },
+  ],
+}
+
+export const COMPONENT_CATEGORIES = ['Actions', 'Display', 'Navigation', 'Inputs', 'Feedback', 'Animation']
 
 export const COMPONENTS = [
   // ---------- Actions ----------
@@ -81,9 +116,19 @@ export const COMPONENTS = [
     id: 'button',
     name: 'Button',
     category: 'Actions',
-    description: 'Primary action button with an onclick handler.',
-    Demo: () => <Button text="Click me" onclick={() => {}} />,
-    code: `<Button text="Click me" onclick={() => alert('Clicked!')} />`,
+    description: 'Primary action button — variant + size props, forwards ref, spreads props.',
+    Demo: () => (
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+        <Button onClick={() => {}}>Primary</Button>
+        <Button variant="ghost" onClick={() => {}}>Ghost</Button>
+        <Button variant="outline" size="sm" onClick={() => {}}>Outline</Button>
+      </div>
+    ),
+    code: `<Button onClick={() => alert('Clicked!')}>Click me</Button>
+
+// variants + sizes
+<Button variant="ghost">Ghost</Button>
+<Button variant="outline" size="sm">Small outline</Button>`,
     playground: htmlDoc(
       'Button',
       `    .button {
@@ -118,12 +163,15 @@ export const COMPONENTS = [
     description: 'A single tech/skill pill, used on project cards and the detail page.',
     Demo: () => (
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-        <TechBadge tech="React" />
-        <TechBadge tech="CSS" />
-        <TechBadge tech="JavaScript" />
+        <TechBadge>React</TechBadge>
+        <TechBadge>CSS</TechBadge>
+        <TechBadge variant="more">+3</TechBadge>
       </div>
     ),
-    code: `<TechBadge tech="React" />`,
+    code: `<TechBadge>React</TechBadge>
+
+// "+N more" style
+<TechBadge variant="more">+3</TechBadge>`,
     playground: htmlDoc(
       'TechBadge',
       `    .tech-badge {
@@ -195,6 +243,81 @@ export const COMPONENTS = [
 // view="list" renders the horizontal layout`,
     playground: null,
   },
+  {
+    id: 'id-card',
+    name: 'IDCard',
+    category: 'Display',
+    description: 'Interactive credential card with 3D tilt, holo shine, QR code, and a flip side.',
+    Demo: () => (
+      <IDCard
+        name="Jane Doe"
+        role="Frontend Engineer"
+        company="Acme Inc."
+        location="Remote"
+        skills={sampleProfile.skills}
+        kicker="Developer Credential"
+        description="I build fast, accessible web apps with a focus on great UX and clean, maintainable code."
+        link="https://example.com"
+      />
+    ),
+    code: `<IDCard
+  name="Jane Doe"
+  role="Frontend Engineer"
+  company="Acme Inc."
+  location="Remote"
+  skills={['React', 'TypeScript', 'CSS']}
+  description="Short bio shown on the back of the card."
+  link="https://example.com"
+/>`,
+    playground: null,
+  },
+  {
+    id: 'coder-profile-card',
+    name: 'CoderProfileCard',
+    category: 'Display',
+    description: 'A code-editor styled card that renders a profile object as a JS snippet.',
+    Demo: () => <CoderProfileCard data={sampleProfile} fileName="jane.js" />,
+    code: `const profile = {
+  name: 'Jane Doe',
+  role: 'Frontend Engineer',
+  location: 'Remote',
+  skills: ['React', 'TypeScript', 'CSS'],
+}
+
+<CoderProfileCard data={profile} fileName="jane.js" />`,
+    playground: null,
+  },
+  {
+    id: 'tech-orbit',
+    name: 'TechOrbit',
+    category: 'Display',
+    description: 'Animated orbit of tech/skill chips rotating on two rings around a core.',
+    Demo: () => (
+      <TechOrbit
+        skills={sampleProfile.skills}
+        title="Technologies I work with"
+        eyebrow="My Stack"
+      />
+    ),
+    code: `<TechOrbit
+  skills={['React', 'TypeScript', 'CSS', 'Node.js', 'GraphQL']}
+  title="Technologies I work with"
+  eyebrow="My Stack"
+/>`,
+    playground: null,
+  },
+  {
+    id: 'github-activity',
+    name: 'GitHubActivity',
+    category: 'Display',
+    description: 'GitHub contribution heatmap with year switcher, stats, and top-languages cards.',
+    Demo: () => <GitHubActivity username="ajayakhanal" />,
+    code: `<GitHubActivity username="octocat" />
+
+// custom year range
+<GitHubActivity username="octocat" years={[2025, 2024, 2023]} />`,
+    playground: null,
+  },
 
   // ---------- Navigation ----------
   {
@@ -220,11 +343,11 @@ export const COMPONENTS = [
       const [, setQuery] = useState('')
       return (
         <div style={{ maxWidth: 360 }}>
-          <SearchBar setSearchQuery={setQuery} />
+          <SearchBar onSearch={setQuery} placeholder="Search…" />
         </div>
       )
     },
-    code: `<SearchBar setSearchQuery={setSearchQuery} />`,
+    code: `<SearchBar onSearch={setQuery} placeholder="Search projects…" />`,
     playground: null,
   },
 
@@ -238,13 +361,13 @@ export const COMPONENTS = [
       const [toast, setToast] = useState(null)
       return (
         <>
-          <Button text="Show toast" onclick={() => setToast({ type: 'success', message: 'Saved successfully!' })} />
-          {toast && <Toast type={toast.type} message={toast.message} onClose={() => setToast(null)} />}
+          <Button onClick={() => setToast({ variant: 'success', message: 'Saved successfully!' })}>Show toast</Button>
+          {toast && <Toast variant={toast.variant} message={toast.message} onClose={() => setToast(null)} />}
         </>
       )
     },
     code: `{toast && (
-  <Toast type="success" message="Saved!" onClose={() => setToast(null)} />
+  <Toast variant="success" message="Saved!" onClose={() => setToast(null)} />
 )}`,
     playground: htmlDoc(
       'Toast',
@@ -273,6 +396,57 @@ export const COMPONENTS = [
   </script>`
     ),
   },
+  {
+    id: 'terminal',
+    name: 'Terminal',
+    category: 'Feedback',
+    description: 'Interactive fake shell — type commands (help, whoami, skills…) driven by a profile.',
+    Demo: () => (
+      <div style={{ maxWidth: 520 }}>
+        <Terminal profile={sampleTerminalProfile} />
+      </div>
+    ),
+    code: `const profile = {
+  user: 'jane@demo',
+  path: '~',
+  name: 'Jane Doe',
+  role: 'Frontend Engineer',
+  location: 'Remote',
+  about: 'I build fast, accessible web apps.',
+  skills: ['React', 'TypeScript', 'CSS'],
+  links: [{ label: 'GitHub', href: 'https://github.com/' }],
+}
+
+<Terminal profile={profile} />`,
+    playground: null,
+  },
+
+  // ---------- Animation ----------
+  {
+    id: 'typing-text',
+    name: 'TypingText',
+    category: 'Animation',
+    description: 'Types out content character-by-character, with optional per-segment styling.',
+    Demo: function TypingTextDemo({ previewKey = 0 }) {
+      return (
+        <TypingText
+          // Vary the id per refresh so the once-per-session guard lets it replay.
+          id={`typing-text-demo-${previewKey}`}
+          speed={45}
+          content={['Hi, I build ', { text: 'reusable', className: 'skill' }, ' components.']}
+        />
+      )
+    },
+    code: `<TypingText
+  content={[
+    'Hi, I build ',
+    { text: 'reusable', className: 'skill' },
+    ' components.',
+  ]}
+  speed={45}
+/>`,
+    playground: null,
+  },
 ]
 
 // Attach each component's real source code (shown in the "Code" tab).
@@ -286,6 +460,12 @@ const SOURCES = {
   pagination: paginationSrc,
   'search-bar': searchBarSrc,
   toast: toastSrc,
+  'id-card': idCardSrc,
+  'coder-profile-card': coderProfileCardSrc,
+  'tech-orbit': techOrbitSrc,
+  'github-activity': gitHubActivitySrc,
+  terminal: terminalSrc,
+  'typing-text': typingTextSrc,
 }
 COMPONENTS.forEach((c) => {
   c.source = SOURCES[c.id]
@@ -294,46 +474,111 @@ COMPONENTS.forEach((c) => {
 // Prop reference per component, shown on the detail page.
 export const COMPONENT_PROPS = {
   button: [
-    { name: 'text', type: 'string', required: true, description: 'The button label.' },
-    { name: 'onclick', type: 'function', description: 'Click handler.' },
+    { name: 'children', type: 'node', required: true, description: 'The button label/content.' },
+    { name: 'variant', type: "'primary' | 'ghost' | 'outline'", default: "'primary'", description: 'Visual style.' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Button size.' },
+    { name: 'type', type: "'button' | 'submit' | 'reset'", default: "'button'", description: 'Native button type.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLButtonAttributes', description: 'onClick, disabled, aria-*, … spread onto the <button>.' },
   ],
   'theme-switcher': [
     { name: 'className', type: 'string', description: 'Extra class names for the wrapper.' },
+    { name: '…rest', type: 'HTMLDivAttributes', description: 'Spread onto the wrapper element.' },
   ],
   'tech-badge': [
-    { name: 'tech', type: 'string', required: true, description: 'The text shown in the badge.' },
-    { name: 'className', type: 'string', description: 'Extra class names (e.g. a modifier).' },
+    { name: 'children', type: 'node', required: true, description: 'The text shown in the badge.' },
+    { name: 'variant', type: "'default' | 'more'", default: "'default'", description: 'Visual style.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLSpanAttributes', description: 'Spread onto the <span>.' },
   ],
   'section-heading': [
     { name: 'children', type: 'node', required: true, description: 'Heading content.' },
-    { name: 'as', type: "'h2' | 'h3'", default: "'h2'", description: 'Heading element/level.' },
-    { name: 'className', type: 'string', description: 'Extra class names.' },
+    { name: 'as', type: "'h1'–'h6'", default: "'h2'", description: 'Heading element/level.' },
+    { name: 'size', type: "'sm' | 'md' | 'lg'", default: "'md'", description: 'Heading size.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLHeadingAttributes', description: 'Spread onto the heading element.' },
   ],
   'social-links': [
     { name: 'as', type: 'element', default: "'ul'", description: 'Container element (ul/div).' },
     { name: 'variant', type: "'icon' | 'text'", default: "'icon'", description: 'Render icons or text labels.' },
     { name: 'items', type: 'array', default: 'SOCIAL_LINKS', description: 'Subset of links to render.' },
     { name: 'iconSize', type: 'number', default: '20', description: 'Icon size in px.' },
-    { name: 'className', type: 'string', description: 'Container class.' },
+    { name: 'className', type: 'string', description: 'Container class (merged).' },
     { name: 'linkClassName', type: 'string', description: 'Class for each link.' },
     { name: 'withListItems', type: 'boolean', default: 'false', description: 'Wrap each link in an <li>.' },
+    { name: 'ariaLabel', type: 'string', default: "'Social links'", description: 'Accessible label for the container.' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the container element.' },
   ],
   'project-card': [
     { name: 'project', type: 'object', required: true, description: 'Project data (title, description, techStack, links, image).' },
     { name: 'view', type: "'grid' | 'list'", default: "'grid'", description: 'Card layout.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the <article>.' },
   ],
   pagination: [
     { name: 'current', type: 'number', required: true, description: 'The active page (1-based).' },
     { name: 'total', type: 'number', required: true, description: 'Total number of pages.' },
     { name: 'onPageChange', type: 'function', required: true, description: 'Called with the new page number.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the wrapper.' },
   ],
   'search-bar': [
-    { name: 'setSearchQuery', type: 'function', required: true, description: 'Receives the debounced query string.' },
+    { name: 'onSearch', type: 'function', required: true, description: 'Receives the debounced query string (on type, Enter, and clear).' },
+    { name: 'placeholder', type: 'string', default: "'Search…'", description: 'Input placeholder.' },
+    { name: 'defaultValue', type: 'string', default: "''", description: 'Initial input text.' },
+    { name: 'debounce', type: 'number', default: '500', description: 'Debounce delay in ms.' },
+    { name: 'className', type: 'string', description: 'Extra class names on the wrapper (merged).' },
+    { name: '…rest', type: 'HTMLInputAttributes', description: 'Spread onto the <input>.' },
   ],
   toast: [
-    { name: 'type', type: "'success' | 'error' | 'sending'", default: "'success'", description: 'Visual style.' },
-    { name: 'message', type: 'string', required: true, description: 'The text shown.' },
+    { name: 'variant', type: "'success' | 'error' | 'sending'", default: "'success'", description: 'Visual style.' },
+    { name: 'children', type: 'node', description: 'Toast content (falls back to `message`).' },
+    { name: 'message', type: 'string', description: 'Text shown when no children are given.' },
     { name: 'duration', type: 'number', default: '4000', description: 'Auto-dismiss delay (ms).' },
     { name: 'onClose', type: 'function', required: true, description: 'Called on dismiss.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+  ],
+  'id-card': [
+    { name: 'name', type: 'string', required: true, description: 'Full name (drives the avatar initials and ID).' },
+    { name: 'role', type: 'string', required: true, description: 'Job title / role.' },
+    { name: 'company', type: 'string', description: 'Company shown with a building icon.' },
+    { name: 'location', type: 'string', description: 'Location shown with a pin icon.' },
+    { name: 'skills', type: 'array', description: 'Skill pills (first 6 are shown).' },
+    { name: 'kicker', type: 'string', default: "'Developer Credential'", description: 'Small label at the top of the card.' },
+    { name: 'description', type: 'string', description: 'Bio shown on the flip side; enables the flip button.' },
+    { name: 'link', type: 'string', default: "'#'", description: 'URL for the QR code and profile link.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the card stage.' },
+  ],
+  'coder-profile-card': [
+    { name: 'data', type: 'object', description: 'Profile object: { name, role, location, skills }.' },
+    { name: 'fileName', type: 'string', default: "'code.js'", description: 'Filename shown in the editor tab.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the card.' },
+  ],
+  'tech-orbit': [
+    { name: 'skills', type: 'array', default: '[]', description: 'Skill names to render as orbiting chips (split across two rings).' },
+    { name: 'title', type: 'string', default: "'Technologies I work with'", description: 'Heading above the orbit.' },
+    { name: 'eyebrow', type: 'string', default: "'My Stack'", description: 'Small label above the title.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the <section>.' },
+  ],
+  'github-activity': [
+    { name: 'username', type: 'string', default: "'ajayakhanal'", description: 'GitHub username to load activity for.' },
+    { name: 'years', type: 'number[]', default: '[2026, 2025, 2024, 2023]', description: 'Selectable years for the heatmap.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the <section>.' },
+  ],
+  terminal: [
+    { name: 'profile', type: 'object', description: 'The shell data: { user, path, shell, name, role, location, about, skills, links }.' },
+    { name: 'className', type: 'string', description: 'Extra class names (merged).' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the terminal wrapper.' },
+  ],
+  'typing-text': [
+    { name: 'content', type: 'array', required: true, description: 'Segments to type — strings or { text, className } objects.' },
+    { name: 'speed', type: 'number', default: '40', description: 'Delay per character in ms.' },
+    { name: 'className', type: 'string', default: "'typing-text'", description: 'Class for the wrapping paragraph.' },
+    { name: 'id', type: 'string', default: "'default'", description: 'Unique id so the animation only plays once per session.' },
+    { name: '…rest', type: 'HTMLAttributes', description: 'Spread onto the <p>.' },
   ],
 }

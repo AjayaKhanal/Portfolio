@@ -1,4 +1,5 @@
 import React from 'react'
+import { cn } from '../lib/utils'
 import { SOCIAL_LINKS } from '../constants/socials'
 
 /*
@@ -9,18 +10,19 @@ import { SOCIAL_LINKS } from '../constants/socials'
  *    link in an <li> (for list-based layouts like the hero).
  *  - `items` lets a caller pass a subset (e.g. omit Email on the contact page).
  */
-const SocialLinks = ({
+const SocialLinks = React.forwardRef(({
   as: Container = 'ul',
   variant = 'icon',
-  className = '',
+  className,
   linkClassName = '',
   iconSize = 20,
   items = SOCIAL_LINKS,
   withListItems = false,
   ariaLabel = 'Social links',
-}) => {
+  ...rest
+}, ref) => {
   return (
-    <Container className={className} aria-label={ariaLabel}>
+    <Container ref={ref} className={cn(className)} aria-label={ariaLabel} {...rest}>
       {items.map(({ label, href, Icon }) => {
         const isMail = href.startsWith('mailto:')
         const link = (
@@ -40,6 +42,8 @@ const SocialLinks = ({
       })}
     </Container>
   )
-}
+})
+
+SocialLinks.displayName = 'SocialLinks'
 
 export default SocialLinks

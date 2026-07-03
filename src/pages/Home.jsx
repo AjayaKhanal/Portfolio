@@ -4,10 +4,14 @@ import { TypeAnimation } from 'react-type-animation'
 import { Download, ArrowRight } from 'lucide-react'
 import Button from '../components/Button'
 import Terminal from '../components/Terminal'
+import { CoderProfileCard } from '../components/Code'
 import TechOrbit from '../components/TechOrbit'
 import TypingText from '../components/TypingText'
 import SocialLinks from '../components/SocialLinks'
-import { coderData } from '../components/CodeBlock'
+import { coderData } from '../constants/coder'
+import { HOME_STATS, HOME_TAGLINE, HOME_ROTATOR_SEQUENCE } from '../constants/home'
+import { DEFAULT_TERMINAL_PROFILE } from '../constants/terminal'
+import { useDeveloperMode } from '../context/DeveloperModeContext'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/home.css'
 
@@ -39,7 +43,7 @@ const Home = () => {
         <p className='profile-role'>Software Engineer</p>
         <TypingText content={content} speed={30} className='muted typing-text' />
         <div className='profile-actions'>
-          <Button text="View Projects" onclick={() => navigate('/projects')} />
+          <Button onClick={() => navigate('/projects')}>View Projects</Button>
           <Link to='/contact' className='button button--ghost'>Contact Me</Link>
         </div>
       </div>
@@ -54,33 +58,13 @@ const Home = () => {
 export default Home
 ============================================================================= */
 
-// Curated, defensible highlight metrics. Tweak the numbers as your work grows.
-const STATS = [
-  { value: '3+', label: 'Years Coding' },
-  { value: '10+', label: 'Projects Built' },
-  { value: `${coderData.skills.length}`, label: 'Technologies' },
-]
-
-
 const Home = () => {
   const navigate = useNavigate()
+  const { devMode } = useDeveloperMode()
   usePageMeta(
     null,
     'Ajaya Khanal — Software Engineer building scalable, efficient software with clean architecture.'
   )
-
-  // Typed intro line — re-uses the existing TypingText component & .dev/.skill styles.
-  const taglineContent = [
-    'Focused on ',
-    { text: 'Full Stack Development', className: 'dev' },
-    ', building ',
-    { text: 'scalable', className: 'skill' },
-    ' and efficient ',
-    { text: 'software solutions', className: 'skill' },
-    ' with ',
-    { text: 'clean architecture', className: 'skill' },
-    '.',
-  ]
 
   return (
     <>
@@ -108,12 +92,7 @@ const Home = () => {
         <p className="hero-rotator-line" aria-hidden="true">
           <span className="hero-rotator-prefix">Specializing in&nbsp;</span>
           <TypeAnimation
-            sequence={[
-              'Full Stack Development', 1800,
-              'React Front-Ends', 1800,
-              '.NET Back-Ends', 1800,
-              'Clean, Scalable Code', 1800,
-            ]}
+            sequence={HOME_ROTATOR_SEQUENCE}
             wrapper="span"
             speed={45}
             repeat={Infinity}
@@ -125,14 +104,14 @@ const Home = () => {
         </span>
 
         <TypingText
-          content={taglineContent}
+          content={HOME_TAGLINE}
           speed={28}
           id="home-tagline"
           className="hero-tagline muted"
         />
 
         <div className="hero-actions">
-          <Button text="View Projects" onclick={() => navigate('/projects')} />
+          <Button onClick={() => navigate('/projects')}>View Projects</Button>
           {/* Drop your CV at public/resume.pdf to wire up this download. */}
           <a className="hero-btn hero-btn--ghost" href="/resume.pdf" download>
             <Download size={18} aria-hidden="true" />
@@ -166,7 +145,7 @@ const Home = () => {
       <div className="hero-visual" data-reveal="right">
         <div className="hero-visual-glow" aria-hidden="true" />
         <div className="hero-stats" aria-label="Highlights">
-          {STATS.map((s) => (
+          {HOME_STATS.map((s) => (
             <div key={s.label} className="hero-stat">
               <span className="hero-stat-value">{s.value}</span>
               <span className="hero-stat-label">{s.label}</span>
@@ -174,12 +153,18 @@ const Home = () => {
           ))}
         </div>
         <div className="hero-code">
-          <Terminal />
+          {/* Developer mode reveals the interactive terminal; otherwise show
+              the read-only code-profile card. */}
+          {devMode ? (
+            <Terminal profile={DEFAULT_TERMINAL_PROFILE} />
+          ) : (
+            <CoderProfileCard data={coderData} fileName="ajaya.js" />
+          )}
         </div>
       </div>
     </section>
 
-    <TechOrbit />
+    <TechOrbit skills={coderData.skills} />
     </>
   )
 }

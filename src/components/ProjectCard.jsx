@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Github, ExternalLink, ArrowRight } from "lucide-react";
 import TechBadge from "./TechBadge";
+import { cn } from "../lib/utils";
 import "../styles/projectCard.css";
 
 // Stable gradient per project, so the placeholder thumbnail is distinct but
@@ -21,7 +22,7 @@ const pickGradient = (str = "") => {
   return GRADIENTS[hash % GRADIENTS.length];
 };
 
-const ProjectCard = ({ project, view = "grid" }) => {
+const ProjectCard = React.forwardRef(({ project, view = "grid", className, ...rest }, ref) => {
   const { slug, title, description, techStack, githubLink, liveDemo, image } = project;
   const navigate = useNavigate();
   const [imgError, setImgError] = useState(false);
@@ -35,11 +36,13 @@ const ProjectCard = ({ project, view = "grid" }) => {
 
   return (
     <article
-      className={`project-card project-card--${view}`}
+      ref={ref}
+      className={cn("project-card", `project-card--${view}`, className)}
       role="link"
       tabIndex={0}
       onClick={openDetail}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && openDetail()}
+      {...rest}
     >
       <div className="project-card__media">
         {showImage ? (
@@ -69,10 +72,10 @@ const ProjectCard = ({ project, view = "grid" }) => {
         {techStack && (
           <div className="tech-stack">
             {techStack.slice(0, 4).map((tech, index) => (
-              <TechBadge key={index} tech={tech} />
+              <TechBadge key={index}>{tech}</TechBadge>
             ))}
             {techStack.length > 4 && (
-              <TechBadge tech={`+${techStack.length - 4}`} className="tech-badge--more" />
+              <TechBadge variant="more">{`+${techStack.length - 4}`}</TechBadge>
             )}
           </div>
         )}
@@ -111,6 +114,8 @@ const ProjectCard = ({ project, view = "grid" }) => {
       </div>
     </article>
   );
-};
+});
+
+ProjectCard.displayName = "ProjectCard";
 
 export default ProjectCard;

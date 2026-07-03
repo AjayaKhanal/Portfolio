@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useLayoutEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Search, X, ChevronDown, ChevronRight, ArrowRight } from 'lucide-react'
 import SectionHeading from '../components/SectionHeading'
@@ -7,6 +7,54 @@ import usePageMeta from '../utils/usePageMeta'
 import '../styles/components-page.css'
 
 const catId = (cat) => `cat-${cat.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+
+/*
+ * Gallery-only preview box: renders the demo inside a fixed-height tile and
+ * scales it DOWN (never up) so the whole component fits without clipping.
+ * Only used on the components page — the detail page shows demos full size.
+ */
+const FitPreview = ({ children }) => {
+  const boxRef = useRef(null)
+  const contentRef = useRef(null)
+  const [scale, setScale] = useState(1)
+
+  useLayoutEffect(() => {
+    const box = boxRef.current
+    const content = contentRef.current
+    if (!box || !content) return
+
+    const fit = () => {
+      const cs = getComputedStyle(box)
+      const availW = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
+      const availH = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom)
+      // scrollWidth/Height ignore the transform, so we always read natural size.
+      const w = content.scrollWidth
+      const h = content.scrollHeight
+      if (!w || !h) return
+      setScale(Math.min(1, availW / w, availH / h))
+    }
+
+    fit()
+    // Re-fit when the box resizes (responsive) or the demo's size settles
+    // (e.g. GitHubActivity finishes loading, TypingText finishes typing).
+    const ro = new ResizeObserver(fit)
+    ro.observe(box)
+    ro.observe(content)
+    return () => ro.disconnect()
+  }, [])
+
+  return (
+    <div ref={boxRef} className="comp-tile-preview">
+      <div
+        ref={contentRef}
+        className="comp-tile-fit"
+        style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
 
 const Components = () => {
   usePageMeta(
@@ -47,7 +95,8 @@ const Components = () => {
         <span className="components-eyebrow">Component Library</span>
         <h1 className="components-title">Reusable Components</h1>
         <p className="components-lead">
-          The reusable React components I built for this portfolio. Search or filter, then open any
+          A library of reusable React components with consistent, composable APIs — variants, ref
+          forwarding, <code>className</code> merging, and prop spreading. Search or filter, then open any
           component for its preview, code, props, and an editable demo.
         </p>
       </header>
@@ -165,9 +214,9 @@ const Components = () => {
                         onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && openDetail(entry.id)}
                         aria-label={`${entry.name} — view details`}
                       >
-                        <div className="comp-tile-preview">
+                        <FitPreview>
                           <entry.Demo />
-                        </div>
+                        </FitPreview>
                         <div className="comp-tile-foot">
                           <span className="comp-tile-name">{entry.name}</span>
                           <ArrowRight size={16} className="comp-tile-arrow" aria-hidden="true" />

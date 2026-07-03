@@ -1,4 +1,5 @@
 import {CoderProfileCard} from '../components/Code';
+import { coderData } from '../constants/coder';
 import '../styles/portfolio.css'
 
 const Portfolio = () => {
@@ -63,7 +64,7 @@ const Portfolio = () => {
 
           {/* Right Column: Code Editor */}
           <div className="order-1 lg:order-2 animate-fade-in-up">
-            <CoderProfileCard />
+            <CoderProfileCard data={coderData} fileName="ajaya.js" />
           </div>
 
         </div>
