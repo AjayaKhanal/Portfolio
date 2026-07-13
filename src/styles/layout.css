@@ -8,6 +8,10 @@
 .main{
   display: flex;
   flex-direction: column;
+  /* Reserve clearance for the fixed 60px header (top) and fixed footer (bottom)
+     so content is never hidden beneath them — floors at 60px on every breakpoint. */
+  padding-top: max(var(--section-padding), 60px);
+  padding-bottom: max(var(--section-padding), 60px);
 }
 
 /* Prevent any stray element (e.g. entrance transforms) from forcing a
@@ -23,11 +27,23 @@ html {
   .main, .section {
     padding: 48px 16px;
   }
+
+  /* Keep 60px clearance for the fixed header/footer even as side padding shrinks. */
+  .main {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
 }
 
 /* Phones */
 @media (max-width: 480px) {
   .main, .section {
     padding: 40px 12px;
+  }
+
+  /* Keep 60px clearance for the fixed header/footer even as side padding shrinks. */
+  .main {
+    padding-top: 60px;
+    padding-bottom: 60px;
   }
 }

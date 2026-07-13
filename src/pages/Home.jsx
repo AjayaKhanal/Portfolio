@@ -8,12 +8,17 @@ import { CoderProfileCard } from '../components/Code'
 import TechOrbit from '../components/TechOrbit'
 import TypingText from '../components/TypingText'
 import SocialLinks from '../components/SocialLinks'
+import FeaturedWork from '../components/FeaturedWork'
 import { coderData } from '../constants/coder'
-import { HOME_STATS, HOME_TAGLINE, HOME_ROTATOR_SEQUENCE } from '../constants/home'
+import { HOME_STATS, HOME_TAGLINE, HOME_PITCH, HOME_ROTATOR_SEQUENCE } from '../constants/home'
+import { EXPERIENCE } from '../constants/about'
 import { DEFAULT_TERMINAL_PROFILE } from '../constants/terminal'
 import { useDeveloperMode } from '../context/DeveloperModeContext'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/home.css'
+
+// Current role, surfaced in the hero as a credibility signal.
+const currentRole = EXPERIENCE.find((e) => e.current)
 
 /* =============================================================================
    LEGACY HOME (v1) — preserved for easy rollback.
@@ -88,6 +93,12 @@ const Home = () => {
 
         <h2 className="hero-role">Software Engineer</h2>
 
+        {currentRole && (
+          <p className="hero-current">
+            Currently {currentRole.role} @ <strong>{currentRole.name}</strong>
+          </p>
+        )}
+
         {/* Dynamic specialty rotator (decorative — static equivalent below for AT) */}
         <p className="hero-rotator-line" aria-hidden="true">
           <span className="hero-rotator-prefix">Specializing in&nbsp;</span>
@@ -110,17 +121,26 @@ const Home = () => {
           className="hero-tagline muted"
         />
 
+        {/* Benefit-oriented pitch aimed at employers & clients. */}
+        <p className="hero-pitch">{HOME_PITCH}</p>
+
         <div className="hero-actions">
-          <Button onClick={() => navigate('/projects')}>View Projects</Button>
-          {/* Drop your CV at public/resume.pdf to wire up this download. */}
-          <a className="hero-btn hero-btn--ghost" href="/resume.pdf" download>
-            <Download size={18} aria-hidden="true" />
-            Download Résumé
-          </a>
-          <Link className="hero-btn hero-btn--ghost" to="/contact">
-            Contact
+          {/* Primary CTA = the conversion goal (start a hiring/freelance chat). */}
+          <Button onClick={() => navigate('/contact')}>Hire Me</Button>
+          <Link className="hero-btn hero-btn--ghost" to="/projects">
+            View Projects
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
+          {/* Drop your CV at public/resume.pdf to wire up this download. */}
+          <a
+            className="hero-btn hero-btn--ghost"
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Download size={18} aria-hidden="true" />
+            Résumé
+          </a>
         </div>
 
         <SocialLinks
@@ -164,7 +184,57 @@ const Home = () => {
       </div>
     </section>
 
+    <FeaturedWork />
+
     <TechOrbit skills={coderData.skills} />
+
+    {/* ---------- Freelance / hiring call-to-action ---------- */}
+    <section className="home-cta" data-reveal="up" aria-label="Get in touch">
+      <div className="home-cta-card">
+        <div className="home-cta-inner">
+          <div className="home-cta-badge">
+            <span className="home-cta-radar" aria-hidden="true">
+              <span className="home-cta-radar-dot" />
+            </span>
+            <span className="home-cta-badge-text">
+              <strong>Available for work</strong>
+              <small>Full-time &amp; freelance · usually replies within a day</small>
+            </span>
+          </div>
+
+          <h2 className="home-cta-title">
+            Let’s build something <span className="home-cta-grad">great</span> together
+          </h2>
+          <p className="home-cta-text">
+            Hiring for a full-time role or need a freelancer to ship a project? Tell me what
+            you’re building and I’ll help you get it done.
+          </p>
+
+          <div className="home-cta-actions">
+            <Link to="/contact" className="hero-btn home-cta-btn">
+              Start a conversation
+              <ArrowRight size={18} aria-hidden="true" />
+            </Link>
+            <a
+              className="hero-btn hero-btn--ghost"
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Download size={18} aria-hidden="true" />
+              Résumé
+            </a>
+          </div>
+
+          <ul className="home-cta-tags" aria-label="Open to">
+            <li>Full-time</li>
+            <li>Freelance</li>
+            <li>Contract</li>
+            <li>Remote</li>
+          </ul>
+        </div>
+      </div>
+    </section>
     </>
   )
 }

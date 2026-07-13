@@ -2,7 +2,15 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '../lib/utils'
 import '../styles/terminal.css'
 
+// A little ASCII box banner around the given text.
+const makeBanner = (text) => {
+  const label = ` ${text} `
+  const bar = '─'.repeat(label.length)
+  return [`┌${bar}┐`, `│${label}│`, `└${bar}┘`]
+}
+
 // Build the command set from a resolved profile so the terminal stays reusable.
+// Each command's run receives (args, ctx) — most ignore them.
 const buildCommands = (p) => ({
   help: {
     description: 'List all available commands',
@@ -40,6 +48,36 @@ const buildCommands = (p) => ({
     description: 'Show social and contact links',
     run: () => ({ type: 'links', links: p.links }),
   },
+  echo: {
+    description: 'Print the given text',
+    run: (args) => ({
+      type: 'lines',
+      lines: [{ text: args.join(' '), className: 'term-out--plain' }],
+    }),
+  },
+  date: {
+    description: 'Show the current date and time',
+    run: () => ({
+      type: 'lines',
+      lines: [{ text: new Date().toString(), className: 'term-out--accent' }],
+    }),
+  },
+  history: {
+    description: 'Show previously run commands',
+    run: (args, ctx) => ({
+      type: 'lines',
+      lines: ctx.pastCommands.length
+        ? ctx.pastCommands.map((c, i) => ({
+            text: `${i + 1}  ${c}`,
+            className: 'term-out--muted',
+          }))
+        : [{ text: 'No history yet.', className: 'term-out--muted' }],
+    }),
+  },
+  banner: {
+    description: 'Print a name banner',
+    run: () => ({ type: 'banner', lines: makeBanner(p.name) }),
+  },
   clear: {
     description: 'Clear the terminal screen',
     run: () => ({ type: 'clear' }),
@@ -58,6 +96,7 @@ const Terminal = React.forwardRef(({ profile = {}, className, ...rest }, ref) =>
       lines: [
         { text: `Welcome to ${p.name}'s terminal.`, className: 'term-out--accent' },
         { text: "Type 'help' and press Enter to see what you can do.", className: 'term-out--muted' },
+        { text: 'Tip: Tab autocompletes · ↑/↓ recalls history · Ctrl+L clears.', className: 'term-out--muted' },
       ],
     }),
     [p]
@@ -82,14 +121,17 @@ const Terminal = React.forwardRef(({ profile = {}, className, ...rest }, ref) =>
   }
 
   const runCommand = (raw) => {
-    const name = raw.trim().toLowerCase()
+    const trimmed = raw.trim()
+    const parts = trimmed.split(/\s+/)
+    const name = (parts[0] || '').toLowerCase()
+    const args = parts.slice(1)
 
-    if (name === '') {
+    if (trimmed === '') {
       setHistory((h) => [...h, { command: '', result: null }])
       return
     }
 
-    setPastCommands((c) => [...c, raw.trim()])
+    setPastCommands((c) => [...c, trimmed])
 
     const command = COMMANDS[name]
 
@@ -97,12 +139,12 @@ const Terminal = React.forwardRef(({ profile = {}, className, ...rest }, ref) =>
       setHistory((h) => [
         ...h,
         {
-          command: raw.trim(),
+          command: trimmed,
           result: {
             type: 'lines',
             lines: [
               {
-                text: `command not found: ${raw.trim()} — type 'help' for a list.`,
+                text: `command not found: ${name} — type 'help' for a list.`,
                 className: 'term-out--error',
               },
             ],
@@ -112,21 +154,52 @@ const Terminal = React.forwardRef(({ profile = {}, className, ...rest }, ref) =>
       return
     }
 
-    const result = command.run()
+    // `pastCommands` here is the value before this command was appended, so the
+    // `history` command lists everything up to (but not including) itself.
+    const result = command.run(args, { pastCommands, profile: p })
 
     if (result.type === 'clear') {
       setHistory([])
       return
     }
 
-    setHistory((h) => [...h, { command: raw.trim(), result }])
+    setHistory((h) => [...h, { command: trimmed, result }])
   }
 
   const onKeyDown = (e) => {
+    // Ctrl/Cmd+L clears the screen, like a real shell.
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+      e.preventDefault()
+      setHistory([])
+      return
+    }
+    // Ctrl+C abandons the current line.
+    if (e.ctrlKey && e.key.toLowerCase() === 'c') {
+      e.preventDefault()
+      setHistory((h) => [...h, { command: `${input}^C`, result: null }])
+      setInput('')
+      setHistoryIndex(-1)
+      return
+    }
+
     if (e.key === 'Enter') {
       runCommand(input)
       setInput('')
       setHistoryIndex(-1)
+    } else if (e.key === 'Tab') {
+      // Autocomplete the command from the available set.
+      e.preventDefault()
+      const typed = input.trim().toLowerCase()
+      if (!typed) return
+      const matches = Object.keys(COMMANDS).filter((c) => c.startsWith(typed))
+      if (matches.length === 1) {
+        setInput(matches[0])
+      } else if (matches.length > 1) {
+        setHistory((h) => [
+          ...h,
+          { command: null, result: { type: 'lines', lines: [{ text: matches.join('   '), className: 'term-out--muted' }] } },
+        ])
+      }
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       if (pastCommands.length === 0) return
@@ -201,6 +274,10 @@ const Terminal = React.forwardRef(({ profile = {}, className, ...rest }, ref) =>
           ))}
         </div>
       )
+    }
+
+    if (result.type === 'banner') {
+      return <pre className="term-banner">{result.lines.join('\n')}</pre>
     }
 
     if (result.type === 'lines') {

@@ -228,7 +228,7 @@ a.contact-info-value:hover {
 .contact-field textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 22%, transparent);
 }
 
 .contact-field input.has-error,
@@ -262,8 +262,8 @@ a.contact-info-value:hover {
 }
 
 .contact-btn--primary {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--primary-color);
+  color: var(--on-primary);
 }
 
 .contact-btn--primary:hover {

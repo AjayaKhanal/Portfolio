@@ -13,8 +13,13 @@ const GitHubActivity = React.forwardRef(
   const [year, setYear] = useState(years[0])
 
   const profileUrl = `https://github.com/${username}`
-  const stats = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=true&bg_color=00000000&title_color=2f81f7&icon_color=2f81f7&text_color=8b949e&hide=issues`
-  const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&hide_border=true&bg_color=00000000&title_color=2f81f7&text_color=8b949e`
+  // Match the card colours to the active theme so text stays readable on both.
+  const isDark = resolvedTheme === 'dark'
+  const titleColor = isDark ? '2f81f7' : '0969da'
+  const textColor = isDark ? '8b949e' : '57606a'
+  const iconColor = titleColor
+  const stats = `https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&hide_border=true&bg_color=00000000&title_color=${titleColor}&icon_color=${iconColor}&text_color=${textColor}&hide=issues`
+  const topLangs = `https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&hide_border=true&bg_color=00000000&title_color=${titleColor}&text_color=${textColor}`
 
   return (
     <section ref={ref} className={cn('github-activity', className)} data-reveal="up" aria-label="GitHub activity" {...rest}>

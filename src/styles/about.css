@@ -65,8 +65,8 @@
 }
 
 .about-btn--primary {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--primary-color);
+  color: var(--on-primary);
 }
 
 .about-btn--primary:hover {
@@ -221,8 +221,8 @@
 }
 
 .badge-current {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--primary-color);
+  color: var(--on-primary);
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.06em;

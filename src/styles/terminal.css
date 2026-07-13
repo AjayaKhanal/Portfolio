@@ -175,6 +175,16 @@
   color: #ff7b72;
 }
 
+.term-banner {
+  margin: 0.2rem 0;
+  color: #58a6ff;
+  font-family: inherit;
+  font-weight: 600;
+  line-height: 1.15;
+  white-space: pre;
+  overflow-x: auto;
+}
+
 .term-help {
   padding-top: 0.2rem;
 }

@@ -44,13 +44,13 @@
   }
 
   .tag-chip--active {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #ffffff;
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--on-primary);
   }
 
   .tag-chip--active:hover {
-    color: #ffffff;
+    color: var(--on-primary);
   }
 
   /* ---------- Loading skeletons ---------- */
@@ -150,8 +150,8 @@
   }
 
   .view-btn.is-active {
-    background: var(--primary);
-    color: #ffffff;
+    background: var(--primary-color);
+    color: var(--on-primary);
   }
 
   /* ---------- Grid / list layouts ---------- */

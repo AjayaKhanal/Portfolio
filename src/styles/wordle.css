@@ -1,0 +1,388 @@
+/* =============================================================================
+   Wordle — theme-aware. HUD/keyboard use site tokens; tile states use fixed
+   green/amber/gray that read on light and dark.
+   ============================================================================= */
+.wordle {
+  /* One tile-size token drives both the board and the keyboard so tiles stay a
+     roughly constant size across 5/7-letter answers (the board WIDTH grows with
+     the column count instead of tiles shrinking). */
+  --wordle-tile: clamp(44px, 13vw, 60px);
+  --wordle-gap: 6px;
+  width: 100%;
+  /* Cap to the widest possible board (7 letters) so the keyboard lines up. */
+  max-width: calc(7 * var(--wordle-tile) + 6 * var(--wordle-gap));
+  margin: 0 auto;
+}
+
+/* ---------- HUD ---------- */
+.wordle-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.wordle-stats {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.wordle-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--border-radius);
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  box-shadow: var(--shadow-md);
+}
+
+.wordle-stat-label {
+  font-size: 0.64rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted-foreground);
+}
+
+.wordle-stat-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.wordle-hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wordle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.05rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text-foreground);
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  transition: transform 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.wordle-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.wordle-btn--icon {
+  padding: 0.55rem;
+}
+
+.wordle-btn--primary {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.wordle-btn--primary:hover {
+  color: #fff;
+  background: color-mix(in srgb, var(--primary) 88%, #000);
+}
+
+/* ---------- Board ---------- */
+.wordle-board {
+  /* --cols is set inline from the answer length (Wordle.jsx); the board width is
+     derived from it so tiles keep a constant size and only the width changes. */
+  --cols: 5;
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: var(--wordle-gap);
+  margin: 0 auto;
+  width: calc(var(--cols) * var(--wordle-tile) + (var(--cols) - 1) * var(--wordle-gap));
+  max-width: 100%;
+}
+
+.wordle-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--wordle-gap);
+}
+
+.wordle-row.is-shake {
+  animation: wordle-shake 0.4s ease;
+}
+
+@keyframes wordle-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+.wordle-tile {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  font-size: clamp(1.3rem, 7vw, 2rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-foreground);
+  border: 2px solid var(--ring-border);
+  background: transparent;
+}
+
+.wordle-tile--empty {
+  border-color: color-mix(in srgb, var(--text-foreground) 18%, transparent);
+}
+
+.wordle-tile--filled {
+  border-color: color-mix(in srgb, var(--text-foreground) 45%, transparent);
+  animation: wordle-pop 0.1s ease;
+}
+
+@keyframes wordle-pop {
+  0% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* Revealed states (with a flip on appearance). */
+.wordle-tile--correct,
+.wordle-tile--present,
+.wordle-tile--absent {
+  color: #fff;
+  border: none;
+  animation: wordle-flip 0.5s ease both;
+}
+
+.wordle-tile--correct { background: #6aaa64; }
+/* Dark text on the amber tile for AA contrast (white on #c9b458 is ~1.9:1). */
+.wordle-tile--present { background: #c9b458; color: #1a1a1a; }
+.wordle-tile--absent  { background: #787c7e; }
+
+@keyframes wordle-flip {
+  0% { transform: rotateX(0); }
+  45% { transform: rotateX(90deg); }
+  100% { transform: rotateX(0); }
+}
+
+/* ---------- Transient message ---------- */
+.wordle-message {
+  position: absolute;
+  top: -0.25rem;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  z-index: 3;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: #fff;
+  background: #1a1a1a;
+  box-shadow: var(--shadow-md);
+  animation: wordle-fade 0.2s ease;
+}
+
+@keyframes wordle-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Loading state ---------- */
+/* Centered inside the board (not the toast) so it never collides with the HUD. */
+.wordle-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-muted-foreground);
+}
+
+.wordle-loading-spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--text-foreground) 18%, transparent);
+  border-top-color: var(--primary);
+  animation: wordle-spin 0.7s linear infinite;
+}
+
+@keyframes wordle-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Neutral skeleton tiles hold the board size steady while the word loads. */
+.wordle-row--skeleton .wordle-tile {
+  opacity: 0.55;
+}
+
+/* ---------- Keyboard ---------- */
+.wordle-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 1.2rem;
+}
+
+.wordle-krow {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.wordle-key {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--text-foreground);
+  background: color-mix(in srgb, var(--text-foreground) 14%, var(--card-surface));
+  transition: transform 0.1s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.wordle-key:hover {
+  transform: translateY(-1px);
+}
+
+.wordle-key:active {
+  transform: translateY(1px);
+}
+
+.wordle-key--wide {
+  flex: 1.5 1 auto;
+}
+
+.wordle-key--correct { background: #6aaa64; color: #fff; }
+.wordle-key--present { background: #c9b458; color: #1a1a1a; }
+.wordle-key--absent  { background: #787c7e; color: #fff; }
+
+/* ---------- Overlay / tutorial ---------- */
+.wordle-overlay {
+  position: absolute;
+  /* Anchor to the top and let the overlay grow DOWN past a short (7-letter)
+     board rather than clipping; scroll only if it also outgrows the viewport. */
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  min-height: 100%;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+  padding: clamp(1rem, 4vw, 1.5rem);
+  border-radius: 12px;
+  text-align: center;
+  background: color-mix(in srgb, var(--card-surface) 92%, transparent);
+  backdrop-filter: blur(3px);
+  animation: wordle-fade 0.25s ease;
+}
+
+.wordle-overlay-title {
+  margin: 0;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  font-weight: 800;
+  color: var(--text-foreground);
+}
+
+.wordle-tut-intro {
+  margin: 0;
+  max-width: 32ch;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted-foreground);
+}
+
+.wordle-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  text-align: left;
+}
+
+.wordle-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text-foreground);
+}
+
+.wordle-legend-tile {
+  width: 34px;
+  height: 34px;
+  aspect-ratio: auto;
+  font-size: 1rem;
+  animation: none;
+}
+
+/* ---------- End-game result modal ---------- */
+.wordle-result {
+  gap: 0.5rem;
+}
+
+.wordle-result-emoji {
+  margin: 0;
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.wordle-result-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-muted-foreground);
+}
+
+.wordle-result-word-line {
+  margin: 0.1rem 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text-foreground);
+}
+
+.wordle-result-word {
+  letter-spacing: 0.16em;
+  color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordle-tile--correct,
+  .wordle-tile--present,
+  .wordle-tile--absent,
+  .wordle-tile--filled,
+  .wordle-row.is-shake,
+  .wordle-overlay,
+  .wordle-loading-spinner {
+    animation: none;
+  }
+}

@@ -119,19 +119,7 @@
   gap: 0.4rem;
 }
 
-.tech-badge {
-  padding: 0.25rem 0.55rem;
-  background: color-mix(in srgb, var(--primary) 10%, var(--muted));
-  color: var(--text-foreground);
-  border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--ring-border));
-  border-radius: 6px;
-  font-size: 0.78rem;
-  font-weight: 500;
-}
-
-.tech-badge--more {
-  opacity: 0.7;
-}
+/* .tech-badge base styles now live in tech-badge.css (owned by the component). */
 
 .project-card__footer {
   margin-top: auto;

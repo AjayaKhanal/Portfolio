@@ -108,8 +108,8 @@
 }
 
 .notfound-btn--primary {
-  background-color: var(--primary);
-  color: #ffffff;
+  background-color: var(--primary-color);
+  color: var(--on-primary);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 

@@ -1,0 +1,102 @@
+/* =============================================================================
+   Games page — a light hero above the game playground.
+   ============================================================================= */
+.games-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+.games-hero {
+  text-align: center;
+  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+}
+
+.games-eyebrow {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted-foreground);
+}
+
+.games-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-foreground);
+}
+
+.games-lead {
+  margin: 0.7rem auto 0;
+  max-width: 52ch;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--text-muted-foreground);
+}
+
+/* ---------- Game switcher ---------- */
+.games-switch {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+  gap: 0.3rem;
+  margin: 0 auto clamp(1.5rem, 4vw, 2.2rem);
+  padding: 0.3rem;
+  border-radius: 999px;
+  background: var(--card-surface);
+  border: 1px solid var(--ring-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* center the pill switcher under the hero */
+.games-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.games-hero {
+  width: 100%;
+}
+
+.games-switch-btn {
+  padding: 0.5rem 1.3rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--text-muted-foreground);
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.games-switch-btn:hover {
+  color: var(--text-foreground);
+}
+
+.games-switch-btn.is-active {
+  color: #fff;
+  background: var(--primary);
+}
+
+/* Tighten the pills so all three fit narrow (~320px) phones. */
+@media (max-width: 400px) {
+  .games-switch-btn {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Wrapper so the active game reveals on scroll and stays centered. */
+.games-stage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

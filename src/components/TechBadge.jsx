@@ -1,5 +1,6 @@
 import React from 'react'
 import { cva } from '../lib/utils'
+import '../styles/tech-badge.css'
 
 const badge = cva('tech-badge', {
   variants: {

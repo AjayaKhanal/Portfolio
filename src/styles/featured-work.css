@@ -1,0 +1,49 @@
+/* =============================================================================
+   Home "Featured Work" strip — highlights a few projects right on the home page
+   so visitors see proof of work without navigating away.
+   ============================================================================= */
+.featured-work {
+  width: 100%;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+}
+
+.featured-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.8rem;
+}
+
+.featured-eyebrow {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted-foreground);
+}
+
+.featured-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--primary);
+  transition: gap var(--transition-speed), opacity var(--transition-speed);
+}
+
+.featured-all:hover {
+  gap: 0.65rem;
+  opacity: 0.85;
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 1.5rem;
+}

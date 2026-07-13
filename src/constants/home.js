@@ -7,6 +7,11 @@ export const HOME_STATS = [
   { value: `${coderData.skills.length}`, label: 'Technologies' },
 ];
 
+// Benefit-oriented pitch shown under the typed tagline — speaks to employers
+// and clients, and signals availability for freelance work.
+export const HOME_PITCH =
+  'I help teams and founders ship reliable, well-architected web apps with React and .NET — available for full-time roles and freelance projects.';
+
 // Typed intro line for the hero — segments are strings or { text, className }
 // objects (see the TypingText component).
 export const HOME_TAGLINE = [

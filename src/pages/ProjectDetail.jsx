@@ -115,7 +115,7 @@ const ProjectDetail = () => {
         )}
 
         <div className="project-detail-body" data-reveal="up">
-          <Suspense fallback={<p>Loading project...</p>}>
+          <Suspense fallback={<div className="project-detail-loading">Loading project…</div>}>
             <MDXWrapper>
               <ProjectContent />
             </MDXWrapper>

@@ -1,159 +1,3 @@
-.home{
-    display: flex;
-    flex-direction: row;
-    /* justify-content: center; */
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    /* background:var(--primary-bg); */
-    padding: 60px 20px;
-    min-height: 100vh;
-    color: var(--text-color);
-    gap: 50px;
-    /* flex-wrap: wrap; */
-}
-
-.code{
-  flex: 1.5;
-  background: var(--bg-color);
-}
-
-.profile{
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-color);
-    padding: 30px;
-    border-radius: 10px;
-    /* max-width: 400px; */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    transition: var(--transition);
-    flex: 1;
-  }
-  
-  .profile:hover, .code:hover {
-    transform: translateY(-5px);
-  }
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 6px;
-  }
-
-.profile-role {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0 0 15px;
-}
-
-.profile-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-}
-
-.muted{
-    color: var(--muted-text-color);
-    font-weight: 500;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.dev,.skill{
-    color: yellowgreen;
-    font-weight: bold;
-    transition: color 0.3s ease-in-out;
-}
-
-.dev:hover, .skill:hover{
-    color: yellow;
-}
-
-@keyframes fadeInLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  @keyframes fadeInRight {
-    from {
-      opacity: 0;
-      transform: translateX(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  .fade-in-left {
-    animation: fadeInLeft 0.8s ease forwards;
-  }
-  
-  .fade-in-right {
-    animation: fadeInRight 0.8s ease forwards;
-  }
-
-  @media (max-width: 768px) {
-    .home {
-      flex-direction: column;
-      justify-content: center;
-      padding: 40px 15px;
-      gap: 30px;
-      flex-wrap: wrap;
-      min-height: auto;
-    }
-
-    .profile, .code {
-      width: 100%;
-      max-width: 90%;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    .code h1 {
-      font-size: 2rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .home {
-      padding: 24px 0;
-      gap: 22px;
-    }
-
-    .profile, .code {
-      max-width: 100%;
-    }
-
-    .profile {
-      padding: 20px;
-    }
-
-    .profile-role {
-      font-size: 1.1rem;
-    }
-
-    /* Let the two action buttons share the row evenly on small phones */
-    .profile-actions {
-      gap: 10px;
-    }
-
-    .profile-actions > * {
-      flex: 1 1 140px;
-      text-align: center;
-    }
-  }
-
 /* =============================================================================
    HOME HERO (v2) — modern, premium redesign.
    Namespaced under .home-hero / .hero-* so it never collides with the legacy
@@ -166,7 +10,7 @@
   grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
   gap: clamp(2rem, 5vw, 4.5rem);
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 60px);
   padding: 1rem 0;
   isolation: isolate;
 }
@@ -178,18 +22,6 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-}
-
-.hero-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(to right, var(--ring-border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--ring-border) 1px, transparent 1px);
-  background-size: 46px 46px;
-  opacity: 0.22;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 25%, transparent 75%);
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 25%, transparent 75%);
 }
 
 .hero-glow {
@@ -275,6 +107,26 @@
   font-size: clamp(1.2rem, 2.4vw, 1.6rem);
   font-weight: 700;
   color: var(--text-foreground);
+}
+
+.hero-current {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  color: var(--text-muted-foreground);
+}
+
+.hero-current strong {
+  color: var(--text-foreground);
+  font-weight: 700;
+}
+
+/* Benefit/availability pitch under the typed tagline. */
+.hero-pitch {
+  margin: 0.9rem 0 0;
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-muted-foreground);
 }
 
 .hero-rotator-line {
@@ -538,4 +390,210 @@
     width: 40px;
     height: 40px;
   }
+}
+
+/* =============================================================================
+   Freelance / hiring CTA band (bottom of the home page)
+   ============================================================================= */
+.home-cta {
+  width: 100%;
+  /* TechOrbit above already carries generous bottom padding, so keep this tight
+     to avoid a large dead gap between the two sections. */
+  margin-top: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+/* Card whose border is a slowly rotating gradient "light". A spinning conic
+   pseudo sits behind the inner surface; a hairline margin lets it show only at
+   the edge, so a highlight travels around the border. */
+.home-cta-card {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+  isolation: isolate;
+  background: color-mix(in srgb, var(--primary) 22%, var(--ring-border));
+  box-shadow: var(--shadow-lg);
+}
+
+.home-cta-card::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220%;
+  aspect-ratio: 1 / 1;
+  translate: -50% -50%;
+  z-index: 0;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    color-mix(in srgb, var(--primary) 90%, transparent) 55deg,
+    #a855f7 120deg,
+    transparent 210deg,
+    transparent 360deg
+  );
+  animation: cta-spin 7s linear infinite;
+}
+
+@keyframes cta-spin {
+  to { transform: rotate(1turn); }
+}
+
+.home-cta-inner {
+  position: relative;
+  z-index: 1;
+  margin: 1.5px; /* reveals the rotating gradient as a thin animated border */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  padding: clamp(2.4rem, 6vw, 4rem) 1.5rem;
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse 90% 130% at 50% -25%,
+      color-mix(in srgb, var(--primary) 18%, transparent), transparent 66%),
+    var(--card-surface);
+}
+
+/* ---------- Availability badge with a radar pulse ---------- */
+.home-cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 1rem 0.5rem 0.75rem;
+  border-radius: 999px;
+  text-align: left;
+  background: color-mix(in srgb, var(--card-surface) 65%, transparent);
+  border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--ring-border));
+  backdrop-filter: blur(6px);
+}
+
+.home-cta-radar {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.home-cta-radar-dot {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+}
+
+.home-cta-radar::before,
+.home-cta-radar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid #22c55e;
+  animation: cta-radar 2.4s ease-out infinite;
+}
+
+.home-cta-radar::after {
+  animation-delay: 1.2s;
+}
+
+@keyframes cta-radar {
+  0% { transform: scale(0.55); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.home-cta-badge-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.home-cta-badge-text strong {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-foreground);
+}
+
+.home-cta-badge-text small {
+  font-size: 0.72rem;
+  color: var(--text-muted-foreground);
+}
+
+/* ---------- Headline / text ---------- */
+.home-cta-title {
+  margin: 0.45rem 0 0;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--text-foreground);
+}
+
+.home-cta-grad {
+  background: linear-gradient(120deg, var(--primary), #a855f7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.home-cta-text {
+  margin: 0;
+  max-width: 50ch;
+  font-size: 1.04rem;
+  line-height: 1.65;
+  color: var(--text-muted-foreground);
+}
+
+/* ---------- Actions ---------- */
+.home-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 0.8rem;
+}
+
+.home-cta-btn {
+  color: var(--on-primary);
+  background: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.home-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: color-mix(in srgb, var(--primary) 88%, #000);
+}
+
+.home-cta-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* ---------- "Open to" tag chips ---------- */
+.home-cta-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+}
+
+.home-cta-tags li {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted-foreground);
+  background: color-mix(in srgb, var(--text-foreground) 6%, transparent);
+  border: 1px solid var(--ring-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-cta-card::before { animation: none; }
+  .home-cta-radar::before,
+  .home-cta-radar::after { animation: none; opacity: 0; }
 }

@@ -3,47 +3,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* .header.open .header-center,
-.header.open .theme-switcher {
-  animation: slideDown var(--transition-speed) forwards;
-  opacity: 0;
-} */
-
-.header.open .header-center{
-  animation: slideDown-header var(--transition-speed) forwards;
-  opacity: 0;
-}
-
-.header.open .theme-switcher{
-  animation: slideDown-theme var(--transition-speed) forwards;
-  opacity: 0;
-}
-
-@keyframes slideDown-header {
-  from {
-    transform: translateY(-10%);
-    opacity: 0;
-    top: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-    top: 60px;
-  }
-}
-@keyframes slideDown-theme {
-  from {
-    transform: translateY(-10%);
-    opacity: 0;
-    top: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-    top: 34vh;
-  }
-}
-
 .bar {
     transition: all var(--transition-speed);
   }
@@ -112,7 +71,11 @@ body {
 .anim-pop { animation: popIn 0.45s ease both; }
 
 /* Page-level transition — re-triggers on every route change (keyed in Layout) */
-.page-transition { animation: fadeInUp 0.45s ease both; }
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(16px) scale(0.994); }
+  to { opacity: 1; transform: none; }
+}
+.page-transition { animation: pageEnter 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
 
 /* Stagger: children fade up in sequence */
 .stagger > * { animation: fadeInUp 0.55s ease both; }

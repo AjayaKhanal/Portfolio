@@ -13,7 +13,7 @@
     padding: 10px 20px;
     background-color: var(--nav-bg);
     color: var(--nav-text-color);
-    z-index: 1000;
+    z-index: 900;
 }
 
 .footer-socials{
@@ -34,7 +34,7 @@
 }
 
 .footer p{
-    font-family: cursive;
+    font-family: var(--font-family);
     font-size: 1rem;
     margin: 0;
     display: flex;

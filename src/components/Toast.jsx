@@ -38,7 +38,7 @@ const Toast = React.forwardRef(
           ref={ref}
           className={cn('toast', `toast--${variant}`, className)}
           role={variant === 'error' ? 'alert' : 'status'}
-          aria-live="polite"
+          aria-live={variant === 'error' ? 'assertive' : 'polite'}
           {...rest}
         >
           <Icon

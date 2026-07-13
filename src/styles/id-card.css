@@ -296,6 +296,8 @@
   flex-direction: column;
   justify-content: center;
   flex: 1;
+  min-height: 0; /* allow the flex child to shrink so its content can scroll */
+  overflow-y: auto; /* long descriptions scroll instead of being clipped */
   margin-top: 1.4rem;
   margin-bottom: 2.6rem;
 }

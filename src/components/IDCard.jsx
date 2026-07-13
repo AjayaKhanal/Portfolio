@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { MapPin, Building2, Link as LinkIcon, RotateCw, ArrowLeft } from 'lucide-react'
 import { cn } from '../lib/utils'
 import '../styles/id-card.css'
@@ -13,6 +13,14 @@ const initials = (name) =>
 
 const MAX_TILT = 12
 
+const REST_TILT = {
+  '--rx': '0deg',
+  '--ry': '0deg',
+  '--mx': '50%',
+  '--my': '50%',
+  '--active': '0',
+}
+
 const IDCard = React.forwardRef(({
   name = '',
   role = '',
@@ -26,14 +34,18 @@ const IDCard = React.forwardRef(({
   ...rest
 }, ref) => {
   const cardRef = useRef(null)
+  const rafRef = useRef(null)
   const [flipped, setFlipped] = useState(false)
-  const [tilt, setTilt] = useState({
-    '--rx': '0deg',
-    '--ry': '0deg',
-    '--mx': '50%',
-    '--my': '50%',
-    '--active': '0',
-  })
+
+  // Write the tilt custom properties straight to the DOM node (batched into an
+  // animation frame) so pointer movement never triggers a React re-render.
+  const applyTilt = (vars) => {
+    const el = cardRef.current
+    if (!el) return
+    for (const [prop, value] of Object.entries(vars)) {
+      el.style.setProperty(prop, value)
+    }
+  }
 
   const handleMove = (e) => {
     const el = cardRef.current
@@ -41,24 +53,27 @@ const IDCard = React.forwardRef(({
     const rect = el.getBoundingClientRect()
     const px = (e.clientX - rect.left) / rect.width
     const py = (e.clientY - rect.top) / rect.height
-    setTilt({
-      '--rx': `${(0.5 - py) * MAX_TILT}deg`,
-      '--ry': `${(px - 0.5) * MAX_TILT}deg`,
-      '--mx': `${px * 100}%`,
-      '--my': `${py * 100}%`,
-      '--active': '1',
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    rafRef.current = requestAnimationFrame(() => {
+      applyTilt({
+        '--rx': `${(0.5 - py) * MAX_TILT}deg`,
+        '--ry': `${(px - 0.5) * MAX_TILT}deg`,
+        '--mx': `${px * 100}%`,
+        '--my': `${py * 100}%`,
+        '--active': '1',
+      })
     })
   }
 
   const handleLeave = () => {
-    setTilt({
-      '--rx': '0deg',
-      '--ry': '0deg',
-      '--mx': '50%',
-      '--my': '50%',
-      '--active': '0',
-    })
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    applyTilt(REST_TILT)
   }
+
+  // Cancel any pending frame on unmount.
+  useEffect(() => () => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+  }, [])
 
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=${encodeURIComponent(
     link
@@ -69,7 +84,7 @@ const IDCard = React.forwardRef(({
       <div
         ref={cardRef}
         className="idcard-tilt"
-        style={tilt}
+        style={REST_TILT}
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
       >

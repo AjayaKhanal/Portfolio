@@ -1,26 +1,76 @@
 /* =====================================================================
-   Global box-grid backdrop
+   Global site backdrop
    ---------------------------------------------------------------------
-   The same graph-paper pattern that used to live only in the home hero,
-   now applied behind EVERY page. It's a fixed, full-viewport layer that
-   sits above the page background colour but behind all content, so the
-   grid shows through page gutters and transparent areas on every route.
+   A fixed, full-viewport stack of layers rendered once (SiteBackground,
+   mounted in Layout) behind every page. Layering — ambient aurora, a
+   focused top spotlight, a fine dot grid, and a subtle grain texture —
+   gives the whole app depth instead of a flat colour. All layers are
+   theme-aware and disabled/curbed under reduced-motion.
    ===================================================================== */
-
-body::before {
-  content: '';
+.site-bg {
   position: fixed;
   inset: 0;
-  z-index: -1; /* behind content, above the body background colour */
+  z-index: -1;
+  overflow: hidden;
   pointer-events: none;
+}
 
+.site-bg > * {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---- Layer 1: slow-drifting ambient colour glows ---- */
+.site-bg-aurora {
+  inset: -25%;
+  background:
+    radial-gradient(38% 38% at 16% 20%, color-mix(in srgb, var(--primary) 38%, transparent), transparent 70%),
+    radial-gradient(34% 34% at 84% 16%, color-mix(in srgb, #a855f7 32%, transparent), transparent 70%),
+    radial-gradient(46% 46% at 62% 92%, color-mix(in srgb, var(--primary) 28%, transparent), transparent 72%);
+  filter: blur(70px);
+  opacity: 0.55;
+  animation: sb-aurora 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes sb-aurora {
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1); }
+  50%  { transform: translate3d(2%, 3%, 0) scale(1.08); }
+  100% { transform: translate3d(3%, -1%, 0) scale(1.03); }
+}
+
+/* ---- Layer 2: focused spotlight glow at the top, for depth ---- */
+.site-bg-spotlight {
+  background:
+    radial-gradient(58% 44% at 50% -6%,
+      color-mix(in srgb, var(--primary) 24%, transparent), transparent 68%),
+    radial-gradient(120% 80% at 50% 120%,
+      color-mix(in srgb, var(--primary) 10%, transparent), transparent 60%);
+}
+
+/* ---- Layer 3: dot-matrix "blueprint" grid ---- */
+.site-bg-grid {
+  --dot: color-mix(in srgb, var(--primary) 28%, var(--ring-border));
   background-image:
-    linear-gradient(to right, var(--ring-border) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--ring-border) 1px, transparent 1px);
-  background-size: 46px 46px;
-  opacity: 0.4;
+    radial-gradient(var(--dot) 1.2px, transparent 1.5px),
+    radial-gradient(color-mix(in srgb, var(--primary) 12%, transparent) 1.5px, transparent 1.8px);
+  background-size: 28px 28px, 28px 28px;
+  background-position: 0 0, 14px 14px;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 28%, #000 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 95% 90% at 50% 28%, #000 45%, transparent 100%);
+}
 
-  /* Soft vignette so the lines fade gently toward the very edges. */
-  -webkit-mask-image: radial-gradient(ellipse 95% 90% at 50% 35%, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse 95% 90% at 50% 35%, #000 60%, transparent 100%);
+/* ---- Layer 4: fine grain texture for a premium, non-flat finish ---- */
+.site-bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bg-aurora {
+    animation: none;
+    opacity: 0.4;
+  }
 }

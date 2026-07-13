@@ -4,16 +4,24 @@ import IDCard from '../components/IDCard'
 import GitHubActivity from '../components/GitHubActivity'
 import SectionHeading from '../components/SectionHeading'
 import { ABOUT_SKILLS, ABOUT_INTRO, EXPERIENCE, EDUCATION } from '../constants/about'
+import { useDeveloperMode } from '../context/DeveloperModeContext'
 import usePageMeta from '../utils/usePageMeta'
 import '../styles/about.css'
 
 const About = () => {
   usePageMeta('About', 'About Ajaya Khanal — Software Engineer with experience in React, .NET, and SQL. Skills, experience, and background.');
+  const { devMode } = useDeveloperMode();
   const currentCompany = EXPERIENCE.find((c) => c.current);
   return (
     <div className='about-page'>
       <header className='about-hero' data-reveal='up'>
-        <h1 className='sr-only'>About Ajaya Khanal</h1>
+        <span className='about-eyebrow'>About</span>
+        <h1 className='about-title'>Ajaya Khanal</h1>
+        <p className='about-role'>Software Engineer</p>
+        <p className='about-lead'>
+          Engineer focused on building scalable, maintainable software with React,
+          .NET, and SQL. Here’s a look at my skills, experience, and the work I care about.
+        </p>
       </header>
 
       <section className='about-idcard' data-reveal='scale' aria-label='Credential card'>
@@ -80,7 +88,7 @@ const About = () => {
         </div>
       </section>
 
-      <GitHubActivity username='ajayakhanal' />
+      {devMode && <GitHubActivity username='ajayakhanal' />}
     </div>
   );
 };

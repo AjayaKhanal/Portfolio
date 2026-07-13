@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import ScrollToTop from '../components/ScrollToTop'
+import SiteBackground from '../components/SiteBackground'
 import DevModeOverlay from '../components/DevModeOverlay'
 import { NAV_LINKS } from '../constants/navigation'
 import { coderData } from '../constants/coder'
@@ -21,6 +22,7 @@ const Layout = ({children}) => {
   const navLinks = NAV_LINKS.filter((link) => !link.devOnly || devMode);
   return (
     <>
+    <SiteBackground />
     <ScrollToTop />
     <DevModeOverlay />
     <Header navLinks={navLinks} />
