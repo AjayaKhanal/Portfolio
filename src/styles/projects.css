@@ -155,11 +155,14 @@
   }
 
   /* ---------- Grid / list layouts ---------- */
-  /* Grid: as many columns as fit the screen (min 260px each, never overflow). */
+  /* Grid: as many columns as fit the screen (min 260px each, never overflow).
+     `auto-fill` (not `auto-fit`) keeps the empty column tracks in place, so a
+     lone card after a search/filter keeps its normal width and left-aligns
+     instead of stretching to fill the whole row. */
   .projects-grid {
     display: grid;
     gap: 1.6rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
     margin-bottom: 2.5rem;
   }
 
